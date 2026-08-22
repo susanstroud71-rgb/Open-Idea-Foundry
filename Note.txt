@@ -1,0 +1,28 @@
+A PERSONAL NOTE ON INTENT AND EXPECTATIONS
+
+I also want to be clear about why these materials exist.
+
+I developed and shared these concepts because I wanted to help. I hoped that there was a chance that some idea, mechanism, observation, design element, or framework among them might eventually prove useful to someone with the expertise and resources to evaluate it properly.
+
+That hope should not be confused with a belief that these concepts are necessarily correct, that they will be adopted, or that I possess special knowledge about their significance.
+
+I do not know whether any particular concept in this repository will work. I do not know whether any government, institution, company, researcher, engineer, or other recipient will find a particular proposal useful. I do not assume that similarities between my work and later real-world developments demonstrate that my work caused or influenced those developments.
+
+I recognize the difference between possibility and evidence.
+
+The fact that I devoted substantial time to developing ambitious, unusual, or highly speculative concepts should likewise not be interpreted, by itself, as evidence that I am suffering from psychosis, delusion, or another psychiatric condition. Creative experimentation, curiosity, humanitarian motivation, and a willingness to explore improbable ideas are not claims that those ideas are established reality.
+
+My position is deliberately modest: I hoped there was a chance that something here might help.
+
+Perhaps an entire concept is useful. Perhaps only one small mechanism buried inside hundreds of pages is useful. Perhaps qualified experts will examine a project and conclude that it cannot work at all. I accept all of those possibilities.
+
+That is one reason I am releasing these materials openly rather than presenting myself as an authority capable of validating them.
+
+I am offering ideas, not asserting certainty.
+
+I ask that the work be judged on its contents and evidence, and that technical, scientific, economic, policy, or engineering claims be independently evaluated by people qualified to do so.
+
+If nothing comes of these materials, that is an acceptable outcome. If something useful can be extracted from them, then making them available was worthwhile.
+
+Susan Stroud
+2026
