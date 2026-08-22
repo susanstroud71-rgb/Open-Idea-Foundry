@@ -1,0 +1,32 @@
+PUBLIC STATEMENT ON DEVELOPMENT, AI ASSISTANCE, AND VALIDATION
+
+This repository contains independent conceptual work developed by Susan Stroud with extensive assistance from multiple artificial-intelligence systems.
+
+Artificial intelligence was used throughout the development process for purposes including brainstorming, drafting, technical analysis, calculations, criticism, iterative refinement, document review, consistency checking, identification of potential problems, and exploration of possible solutions.
+
+Many of the concepts were subjected to repeated review and adversarial critique using multiple AI systems. In many cases, those systems ultimately assessed the resulting documents as substantially internally closed, technically plausible, or suitable for progression to further analysis.
+
+Those assessments should not be mistaken for independent professional validation.
+
+I am not an engineer, scientist, physician, economist, lawyer, military professional, or other subject-matter expert merely by virtue of having developed these materials. I do not independently know whether the engineering calculations, scientific assumptions, economic models, technical specifications, performance estimates, safety assumptions, or other specialized conclusions contained in these documents are accurate.
+
+No physical prototype, simulation, laboratory experiment, flight test, clinical study, regulatory assessment, certification program, professional engineering review, peer review, or other real-world validation should be assumed unless a particular document expressly states that such validation occurred.
+
+Multiple AI systems reaching similar conclusions does not establish that those conclusions are correct. AI systems can share assumptions, reproduce errors, overlook the same problems, generate plausible but incorrect calculations, or express greater confidence than the available evidence warrants.
+
+Accordingly, the materials in this repository should be understood primarily as conceptual starting points.
+
+Some concepts may prove viable. Some may contain useful individual mechanisms while the overall concept does not work. Some may require substantial redesign. Some may already exist in another form. Some may prove economically impractical, scientifically unsound, technically impossible, unsafe, or otherwise unsuitable for implementation.
+
+I genuinely do not know which category any particular concept will ultimately fall into.
+
+That determination belongs to appropriately qualified human experts with access to the necessary engineering tools, scientific methods, simulations, experiments, testing facilities, regulatory expertise, operational experience, and other forms of real-world validation.
+
+The purpose of publishing these materials is therefore not to claim that they are finished inventions or validated solutions. It is to make the underlying ideas available so that people and organizations with appropriate expertise can examine them, test them, improve them, reject them, extract useful components from them, or develop them further if they find merit in doing so.
+
+Readers are strongly encouraged to treat numerical specifications, predicted performance, cost estimates, safety margins, technical closure assessments, and similar claims as hypotheses requiring independent verification rather than established facts.
+
+These materials are donated in that spirit: not as finished answers, but as ideas offered for examination.
+
+Susan Stroud
+2026
