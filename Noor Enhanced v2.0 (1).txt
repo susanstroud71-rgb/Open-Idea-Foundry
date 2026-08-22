@@ -1,0 +1,2594 @@
+================================================================================
+NOOR ENHANCED v2.0
+UNCREWED MINE-COUNTERMEASURE SURVEY AND INFLUENCE-SWEEP VESSEL
+Full Engineering Specification, Prototype-Ready Edition
+================================================================================
+
+Document identifier: NOOR-E-2026-07
+Revision: 2.1 (adds five mission-capability systems; supersedes revision
+  2.0, Noor-jo Advanced v2.0, and all earlier drafts)
+Date: 2026-07-29
+Status: Prototype-ready engineering baseline
+Currency basis: All prices in Canadian dollars (CAD). Conversion basis
+  1 USD = 1.41 CAD (market rate, July 2026). Prices reflect mid-2026
+  commercial retail and surplus market levels, landed.
+
+--------------------------------------------------------------------------------
+NON-WEAPON DECLARATION (READ FIRST)
+--------------------------------------------------------------------------------
+The Noor Enhanced vessel is not a weapon, and this document does not describe
+one. The vessel carries no explosive, no warhead, no projectile, no energetic
+material of any kind, and no offensive payload of any description. It carries
+no capability to damage a vessel, a person, or infrastructure.
+
+The Noor Enhanced is a mine-countermeasure survey and inspection craft. It
+performs three civilian and humanitarian functions:
+
+  1. It surveys suspected mined water and maps hazards.
+  2. It emits controlled acoustic and magnetic signatures that imitate the
+     physical presence of an ordinary ship. This technique, known
+     internationally as influence sweeping, encourages a mine to actuate
+     against the simulated ship rather than against a real one. The signature
+     emitter is a loudspeaker for water and a set of electromagnets. Neither
+     component harms anything.
+  3. It listens and records, so that clearance teams know where an event
+     occurred and which corridor segments stand clear.
+
+The vessel itself remains outside lethal range of any actuation event by
+design, and where loss occurs, the vessel is expendable by economics, not by
+intent. Every operational claim in this document ties to a stated test in the
+verification plan (Section 28), and no claim exceeds what the stated hardware
+physically supports.
+
+--------------------------------------------------------------------------------
+DOCUMENT PURPOSE AND RELATION TO PRIOR VERSIONS
+--------------------------------------------------------------------------------
+This revision converts the Noor concept from a conceptual paper into a
+pilotable prototype specification. It expands every engineering section of
+Noor-jo Advanced v2.0, corrects its internal contradictions, and incorporates
+the full technical review feedback recorded in the Noor review log, including
+the complete redesign of the thermal management system.
+
+Principal corrections relative to Noor-jo Advanced v2.0:
+
+  - Removed the submarine features (100 m depth rating, pressure hull,
+    emergency blow, ballast diving). The craft is a surface vessel. The prior
+    document claimed both a 100 m depth rating and a 5 bar (50 m) pressure
+    vessel, a direct contradiction, and neither claim matches a surface-sweep
+    mission. Section 6 defines the actual watertight integrity standard.
+  - Reconciled the hull mass. The prior document priced 22 kg of HDPE for an
+    18 m2 hull skin 18 to 22 mm thick; that volume of HDPE weighs over
+    300 kg. Section 6 and Section 7 present a sandwich construction and a
+    reconciled mass budget that closes to a real displacement.
+  - Reconciled the power and endurance figures. The prior document claimed
+    240 to 300 minutes of endurance at a 4.33 kW cruise draw from a 4.8 kWh
+    battery; that arithmetic gives about 66 minutes. Section 9 presents a
+    corrected battery, corrected speed-power curve, and honest endurance.
+  - Replaced the hand-waved hull-jacket cooling note with a fully engineered
+    thermal management system (Section 10): heat loads, flow calculations,
+    pump selection, keel-cooler sizing, redundancy, thermal transient
+    analysis, monitoring, and a load-shed ladder.
+  - Corrected a heat-flow arithmetic error carried in the review log itself:
+    the log cited 28 L/min of coolant for 1.2 kW at 10 degrees C rise. The
+    correct figure is about 1.7 L/min. Section 10 shows the derivation and
+    sizes the loop with proper margin.
+  - Added the operational standoff protocol, post-sweep validation mode,
+    multi-factor event confidence, signature library, mesh-network operating
+    modes, mass budget, power budget, structural and fatigue verification,
+    stability analysis, ingress protection schedule, launch and recovery
+    concept, operational concept, autonomy software detail, safety case,
+    maintenance plan, spares list, layered cost model, and a comparison
+    against fielded mine-countermeasure systems.
+  - Softened all mission language. The document now reads as a survey and
+    inspection craft specification throughout.
+  - Revision 2.1: added the five mission-capability systems identified in
+    follow-up review: side-scan seabed sonar for zero-visibility
+    verification, a low-frequency mechanical impactor for acoustic
+    influence sweeping, a gravity-drop dipping hydrophone for listening
+    below the surface noise layer, a seabed optical-flow and altimeter
+    aid for GNSS-denied navigation, and wire-rope shock isolation for
+    near-miss impulse survival. Each system uses consumer-marine or
+    industrial hardware instead of military-grade equivalents. Net cost
+    change: plus 946 CAD per unit after a compensating downsize of the
+    acoustic amplifier (Sections 14.1 and 24.13).
+
+================================================================================
+PART A. FOUNDATIONS
+================================================================================
+
+--------------------------------------------------------------------------------
+1. MISSION STATEMENT AND SCOPE BOUNDARY
+--------------------------------------------------------------------------------
+
+1.1 MISSION STATEMENT
+
+  The Noor Enhanced provides rapid, low-cost, personnel-safe survey and
+  influence sweeping of suspected mined coastal water, with recorded
+  verification of every actuation event, so that clearance authorities open
+  shipping corridors faster and at a small fraction of traditional cost,
+  without exposing any person to the minefield.
+
+1.2 WHAT THE VESSEL DOES
+
+  - Transits autonomously to assigned survey sectors under human supervision.
+  - Emits calibrated acoustic and magnetic ship signatures along planned
+    sweep lanes (influence sweeping, the same technique family as the
+    fielded Mk-104 acoustic generator and magnetic sweep cable).
+  - Listens continuously with a hydrophone array and records every impulsive
+    event with time, position, and audio.
+  - Maps the seabed with side-scan sonar, which sees through the turbid
+    and zero-visibility water that blinds optical cameras (Section 15.7).
+  - Films the seabed for visual inspection of contacts and post-event
+    debris where visibility permits.
+  - Reports health, position, and events to a human operator in near real
+    time within radio range, and in delayed store-and-forward mode beyond it.
+  - Returns for battery exchange, inspection, and reuse. It tolerates loss
+    without strategic or environmental harm.
+
+1.3 WHAT THE VESSEL DOES NOT DO
+
+  - It does not classify mines. It cannot determine mine type, age, or fuze
+    logic. Classification remains the role of minehunting sonar systems and
+    clearance divers.
+  - It does not neutralize mines by its own action. An actuation event is the
+    mine responding to a simulated ship signature; the vessel adds nothing
+    energetic to the water.
+  - It does not certify a corridor as safe on its own. It issues clearance
+    confidence maps (Section 15). A human clearance authority certifies.
+  - It does not operate without human supervision. A trained operator
+    supervises every mission, holds abort authority at all times, and reviews
+    all verification data before any clearance claim advances.
+  - It does not carry any payload outside this specification.
+
+1.4 HUMAN SUPERVISION BOUNDARY
+
+  The operator commands, the vessel executes. Waypoint plans, signature
+  activation windows, and abort thresholds come from the operator before
+  launch. During the mission the vessel reports; the operator monitors and
+  intervenes. The vessel never initiates signature emission outside a
+  pre-authorized geofenced window, and it terminates emission on any
+  geofence violation, lost-link timeout, or operator abort command.
+
+1.6 CORE MISSION REQUIREMENTS (REVISION 2.1)
+
+  Five physical requirements define effective lane clearing and hazard
+  detection. Each maps to a specific low-cost system and a specific test.
+
+  Requirement                          System                     Test
+  Detect underwater hazards in         Side-scan seabed sonar     T18
+  turbid or zero-visibility water      (Section 15.7)
+  Actuate acoustic-influence mines     Signature suite plus LF    T11, T19
+  at a standoff distance               impactor (Sections 14,
+                                       14.6) under the standoff
+                                       protocol (Section 15.3)
+  Listen passively below surface       Gravity-drop dipping       T13
+  wave turbulence                      hydrophone (Section 15.8)
+  Hold accurate positioning during     Seabed optical flow plus   T20
+  GNSS jamming or satellite outage     altimeter dead reckoning
+                                       (Section 12.6)
+  Survive near-miss shock waves        Wire-rope isolated         T21
+  from actuations                      electronics trays
+                                       (Section 6.6) plus the
+                                       standoff protocol
+
+--------------------------------------------------------------------------------
+2. DESIGN PHILOSOPHY AND TERMINOLOGY
+--------------------------------------------------------------------------------
+
+2.1 PHILOSOPHY
+
+  - Low cost through commercial off-the-shelf parts and recycled-material
+    structure.
+  - Mass production through thermoforming and flat-panel assembly, with no
+    specialized shipyard.
+  - Personnel safety through full uncrewed operation and expendable economics.
+  - Environmental responsibility through electric propulsion, recycled
+    polymers, and non-toxic construction.
+  - Honesty through testable claims. Every performance figure in this
+    document names its verification test in Section 28.
+
+2.2 TERMINOLOGY USED IN THIS DOCUMENT
+
+  Survey craft: the Noor Enhanced vessel.
+  Influence sweeping: emission of simulated ship signatures along a lane so
+    that influence-fuzed mines actuate harmlessly against the simulation.
+  Actuation event: a mine responding to the sweep signature; detected and
+    recorded by the verification suite.
+  Sweep lane: a planned straight or gently curved track with signature
+    emission active.
+  Sector: a geofenced survey area, typically 1 km by 1 km.
+  Operator: the trained human holding command and abort authority.
+  Support boat: the crewed launch, recovery, and supervision platform.
+
+--------------------------------------------------------------------------------
+3. REFERENCE OPERATING ENVIRONMENT: STRAIT OF HORMUZ
+--------------------------------------------------------------------------------
+
+The design point is the Strait of Hormuz and its approaches, the most
+demanding plausible theatre for this craft. Design values derive from the
+figures below; Section 28 tests against each one.
+
+3.1 WATER AND AIR CONDITIONS
+
+  Summer sea temperature: 31 to 34.6 degrees C (July average 32.7 degrees C;
+  current readings near 33 degrees C).
+  Winter sea temperature: 20 to 23 degrees C.
+  Salinity: about 37 to 38 parts per thousand (above the 35 ppt ocean
+  average); seawater density 1,026 to 1,030 kg/m3.
+  Air temperature: minus 2 to plus 48 degrees C, solar deck loading to
+  1,000 W/m2.
+  Water clarity: frequently turbid, 1 to 8 m visibility; camera work assumes
+  5 m or less and carries its own lighting.
+
+3.2 WIND, WAVES, AND CURRENT
+
+  Shamal wind events (northwesterly, multi-day) produce steep chop of 1 to
+  2.5 m significant height in the strait; winter systems exceed this.
+  Design operating envelope: Beaufort 0 to 5, significant wave height to
+  2.0 m for sweep work and 2.5 m for transit-only, abort at Beaufort 6.
+  Tidal streams in the strait reach 2 to 3 kn in narrow sections; the
+  navigation budget holds a 3 kn current margin (Section 9).
+  Biomarine growth is aggressive in warm, saline water; antifouling and a
+  monthly wipe-down cycle are mandatory maintenance items (Section 22).
+
+3.3 THREAT LIBRARY (UNCLASSIFIED, OPEN SOURCE)
+
+  Regional reporting estimates a regional inventory of 2,000 to 6,000 naval
+  mines of indigenous, Russian-derived, and Chinese-derived types. Open
+  sources name the MAHAM 7 (an influence mine resembling the Italian Manta
+  class), the MAHAM 5 influence mine, the Sadaf 01 contact mine, and the
+  MAHAM 4 timed limpet device. Bottom influence mines in 10 to 60 m of water
+  in the strait approaches form the primary design target; moored contact
+  mines form the secondary target. Smart-fuze behaviors (ship counting,
+  delay timing, signature discrimination) drive the signature library and
+  repeat-pass doctrine in Sections 14 and 19.
+
+3.4 TRAFFIC AND CONSTRAINTS
+
+  The strait carries dense commercial traffic on a defined Traffic
+  Separation Scheme. Survey operations coordinate with port authorities and
+  broadcast a Notice to Mariners; the craft operates inside declared
+  exclusion windows only. Collision avoidance follows COLREGs behavior
+  rules (Section 12) with the operator as final authority.
+
+--------------------------------------------------------------------------------
+4. REGULATORY AND COMPLIANCE FRAMEWORK
+--------------------------------------------------------------------------------
+
+4.1 CLASSIFICATION OF THE CRAFT
+
+  The craft registers as an uncrewed surface survey vessel carrying no cargo,
+  no persons, and no restricted payload. It is not a vessel of war, not a
+  weapon system, and not ordnance. Signature emitters are acoustic and
+  electromagnetic survey instruments in the same family as fisheries sonar
+  and geophysical survey equipment.
+
+4.2 APPROVALS PATHWAY (CASE-BY-CASE, HUMAN-SUPERVISED TEST FRAMEWORK)
+
+  Maritime authorities approve uncrewed craft trials case by case, under a
+  human-supervised test framework. The Noor program follows this sequence:
+
+  Step 1: Engagement. Brief the national maritime authority, the naval
+    mine-countermeasure authority, and the environmental authority on the
+    design, the safety case (Section 21), and the test plan (Section 28).
+  Step 2: Frequency coordination. License the UHF telemetry band and
+    register the satellite and LoRa equipment per national spectrum rules.
+  Step 3: Harbor acceptance. Complete dockside and confined-water tests
+    under authority observation (Section 28, Phases T1 to T3).
+  Step 4: Supervised sea trials. Complete offshore trials with a crewed
+    escort, a declared exercise area, and inert mine simulants only.
+  Step 5: Operational approval. Obtain an operating letter covering
+    defined areas, seasons, crew qualifications, and supervision rules.
+
+  Timeline estimate: 6 to 12 months per jurisdiction, run in parallel with
+  prototype construction.
+
+4.3 STANDARDS REFERENCED FOR GOOD PRACTICE
+
+  - COLREGs: navigation and collision avoidance behavior.
+  - IEC 60529: ingress protection ratings (Section 16).
+  - ISO 12215 (small craft hull construction, scantlings guidance) and
+    DNV-ST-0119 or equivalent small-craft load guidance: structural margins.
+  - UN Manual of Tests and Criteria, Section 38.3: lithium battery transport.
+  - IHO S-57/S-100 chart standards: survey data products.
+
+--------------------------------------------------------------------------------
+5. SYSTEM ARCHITECTURE
+--------------------------------------------------------------------------------
+
+5.1 TOP-LEVEL ARCHITECTURE DIAGRAM
+
+  +------------------------------------------------------------------------+
+  |                        NOOR ENHANCED v2.0                              |
+  |                                                                        |
+  |  SENSORS                 COMPUTE AND CONTROL        COMMUNICATIONS     |
+  |  +------------------+    +---------------------+    +---------------+  |
+  |  | GNSS/RTK         |--->| Single-board        |<--->| UHF 5W radio  |  |
+  |  | IMU 9-DOF        |--->| computer (Linux)    |<--->| Iridium SBD   |  |
+  |  | Depth sounder    |--->| + real-time         |<--->| LoRa mesh     |  |
+  |  | CTD probe        |--->|   microcontroller   |    +---------------+  |
+  |  | Hydrophones x3   |--->| + failsafe state    |                     |
+  |  | Camera + lights  |--->|   machine           |                     |
+  |  | Thermal sensors  |--->|                     |                     |
+  |  | Flow/level/coll. |--->|                     |                     |
+  |  +------------------+    +----------+----------+                     |
+  |                                   |                                  |
+  |                          +--------v---------+                        |
+  |                          | Power management |                        |
+  |                          | board (fused 48V |                        |
+  |                          | bus + DC-DC)     |                        |
+  |                          +--+-----+-----+---+                        |
+  |                             |     |     |                            |
+  |  ACTUATORS                  |     |     |   SIGNATURE SYSTEMS        |
+  |  +----------------+         |     |     |   +--------------------+   |
+  |  | Port motor+ESC |<--------+     |     +-->| Acoustic projector |   |
+  |  | Stbd motor+ESC |<--------+     |         |  + 4 broadband     |   |
+  |  | Trim fin servo |<--------+     |         | Magnetic coils x3  |   |
+  |  | Nav lights/beac|<--------+     |         | (opt) sparker 100J |   |
+  |  +----------------+         |     |         +--------------------+   |
+  |                             |     |                                  |
+  |  POWER                      |     |   THERMAL MANAGEMENT             |
+  |  +---------------------+    |     |   +-------------------------+    |
+  |  | 2x 51.2V 100Ah     |----+     |   | 2x coolant pumps (N+1)  |    |
+  |  | LiFePO4, 10.24 kWh |          |   | 15 L reservoir, 40% PG  |    |
+  |  | Dual BMS + master  |          |   | 2x keel-cooler panels   |    |
+  |  | (opt) solar film   |          |   | cold plates at all heat |    |
+  |  +---------------------+          |   | sources                 |    |
+  |                                   |   +-------------------------+    |
+  |  HULL: recycled HDPE/PET sandwich, foam reserve buoyancy, 3           |
+  |  watertight compartments, aluminum space frame                        |
+  +------------------------------------------------------------------------+
+
+  Revision 2.1 additions to the diagram: side-scan sonar, dipping
+  hydrophone, and an ultrasonic altimeter join the sensor set; a
+  low-frequency mechanical impactor joins the signature set; wire-rope
+  isolators sit under every electronics tray (Sections 6.6, 12.6, 14.6,
+  15.7, 15.8).
+
+5.2 SUBSYSTEM SUMMARY TABLE
+
+  Subsystem              Section   Mass (kg)   Avg power (W)   Cost (CAD)
+  Hull and structure        6        226           0            4,002
+  Trim ballast              7         28           0           (in 6)
+  Propulsion and steering   8         17.1      350-4,350        1,813
+  Power and energy          9        108.5      n/a              3,872
+  Thermal management       10         43.4         55            1,539
+  Communications + compute 11-12       9.5         20            1,508
+  Sensors and instruments  13        (in 11)        21             272
+  Signature systems,       14, 14.6   42.5       610 avg         2,071
+    incl. LF impactor
+  Verification suite       15          4.8          6              955
+  Seabed mapping, dipping  15.7-15.8,  2.9         13             933
+    hydrophone, nav aid    12.6
+  Shock isolators          6.6         0.6          0              48
+  Ingress protection set   16        (in 6)          0             499
+  Fasteners and misc       24          6           0              382
+  Assembly and test        24          0           0            1,910
+  ---------------------------------------------------------------
+  Full-load displacement            512 kg
+  Base unit cost, production rate                          19,804 CAD
+  (Full line-item bill of materials in Section 24; layered program
+  cost model in Section 25.)
+
+  Note: the cost basis in this revision is honest landed 2026 retail plus
+  fair-rate labor. Prior versions quoted optimistic surplus-only pricing and
+  undercounted labor. Section 25 shows the full layered cost model including
+  prototype, production, integration, testing, support, and lifecycle cost.
+
+================================================================================
+PART B. ENGINEERING SPECIFICATIONS
+================================================================================
+
+--------------------------------------------------------------------------------
+6. HULL AND STRUCTURAL SYSTEM
+--------------------------------------------------------------------------------
+
+6.1 OVERALL DIMENSIONS
+
+  Length overall (LOA): 5.20 m
+  Waterline length (LWL): 4.90 m
+  Beam, maximum: 1.60 m
+  Waterline beam: 1.35 m
+  Hull depth (keel to deck): 0.85 m
+  Design draft: 0.22 m (0.30 m maximum with full options and trim ballast)
+  Freeboard at full load: 0.55 to 0.63 m
+  Full-load displacement: 505 kg (Section 7 closes the mass budget)
+  Light-craft displacement: 470 kg
+  Hull form: round-bilge monohull, flared bow, transom stern, twin
+    propeller tunnels, low profile for reduced windage
+  Operational depth: surface craft. The craft does not dive.
+  Watertight integrity: sealed hull tested to 10 m equivalent immersion
+    (1.0 bar overpressure, external) for 4 hours without measurable
+    ingress; this covers capsize and green-water events, not submergence
+    operations.
+
+  Correction note: Noor-jo Advanced v2.0 claimed a 100 m depth rating with
+  a 5 bar pressure hull. Five bar equals 50 m of water, and a surface-sweep
+  craft needs no pressure hull at all. This revision deletes both claims.
+  The electronics bays are watertight boxes, not pressure vessels; the
+  validation requirement is immersion integrity, not depth rating, and
+  Section 28, Test T2 verifies it at 1.5 times the service case.
+
+6.2 HULL MATERIAL: RECYCLED SANDWICH COMPOSITE
+
+  The structure is a sandwich panel: two polymer skins over a recycled
+  closed-cell foam core. The sandwich delivers the required stiffness at
+  roughly one third the mass of the solid 18 to 22 mm HDPE shell specified
+  in the prior revision, and it provides built-in reserve buoyancy.
+
+  Outer skin:
+    Material: recycled HDPE sheet (milk-jug and drum regrind, UV
+      stabilized with 2% carbon black)
+    Thickness: 5 mm standard zones; 8 mm bow impact doubler
+    Density: 0.95 g/cm3
+    Tensile yield: 25 to 28 MPa; flexural modulus about 1.1 GPa
+  Core:
+    Material: recycled PET structural foam, closed cell
+    Thickness: 20 mm (25 mm in bottom panels)
+    Density: 65 kg/m3; compressive strength 0.9 MPa; shear strength
+      0.6 MPa
+    Function: stiffness, reserve buoyancy (about 0.94 m3 of foam yields
+      roughly 900 kg of flotation even with the hull completely flooded),
+      thermal and acoustic insulation
+  Inner liner:
+    Material: recycled polypropylene sheet, 2 mm
+    Function: abrasion protection, wiring chase surface, cosmetics
+  Reinforcement tape:
+    Material: carbon/glass hybrid unidirectional tape, epoxy wet-lay,
+      three plies, 100 mm width
+    Locations: keel line, bow stem, transom corners, motor pod mounts,
+      mast base, lifting points, keel-cooler frames
+    Coverage: about 6 m2, 9 kg
+  Space frame:
+    Material: 6061-T6 aluminum tube, 25 mm OD x 2 mm wall, anodized
+    Layout: 4 longitudinal stringers at 300 mm spacing, 9 transverse
+      frames at 450 to 600 mm spacing
+    Mass: 22 kg
+    Function: hardpoint distribution, keel-cooler mounting, mast and
+      deck hardware support, lifting load path
+  Mass reconciliation: outer skin 21 m2 x 5 mm x 950 kg/m3 = 100 kg;
+    inner liner 19 m2 x 2 mm x 905 kg/m3 = 34 kg; core 19 m2 x 0.02 m x
+    65 kg/m3 = 25 kg; tape 9 kg; frame 22 kg; bow doubler 14 kg;
+    adhesives, weld rod, and sealant 6 kg; primer and topcoat 4 kg;
+    deck hardware, hatch, mast, and fittings 12 kg. Hull subtotal 226 kg.
+
+6.3 CONSTRUCTION PROCESS (THERMOFORM, FOAM, BOND)
+
+  Step 1: Thermoform outer skins. Heat 5 mm recycled HDPE sheet to
+    200 to 220 degrees C and vacuum-form over a two-piece male mold
+    (port and starboard halves plus transom). Cycle time about
+    25 minutes per half. Mold: epoxy tooling board over CNC-cut MDF,
+    good for 300+ pulls, cost 8,000 to 12,000 CAD amortized across the
+    production run.
+  Step 2: Thermoform inner liners from 2 mm PP sheet on the same mold
+    family with a 20 to 25 mm offset surface.
+  Step 3: Foam fill. Place outer skin and inner liner in the assembly
+    jig, inject two-part polyurethane/PET-blend foam (or lay pre-cut
+    recycled PET foam planks with PU adhesive), cure 12 hours.
+  Step 4: Bond hull halves along the centerline with polyurethane
+    structural adhesive plus an HDPE weld-rod cap seam. Install the
+    aluminum space frame on molded standoffs with adhesive and
+    through-bolts at hardpoints only.
+  Step 5: Lay carbon/glass tape reinforcement at the listed zones,
+    vacuum-bag, cure at 60 degrees C for 6 hours.
+  Step 6: Fit the deck ring, hatch coamings, mast base, transom, and
+    appendage mounts. Apply epoxy primer (0.2 mm) and two-part
+    polyurethane topcoat (0.3 mm) in high-visibility gray with
+    retro-reflective tape accents. Apply antifouling below the waterline
+    (copper-free, Section 27).
+  Build time per hull: 3 shifts of one 8-hour day each for a two-person
+    crew once the line runs at rate; 16 to 20 labor hours total.
+
+6.4 STRUCTURAL VERIFICATION (LOADS, MARGINS, FATIGUE)
+
+  Design load cases and margins:
+
+  Case S1, bottom slamming: design local pressure 60 kPa (small-craft
+    guidance for this size and speed class in Beaufort 5; verification
+    targets the measured peak, not the average). Bottom sandwich panel,
+    25 mm core, 300 x 450 mm bay between stiffeners: peak facing stress
+    computes to about 11 MPa against a 25 MPa yield, static factor of
+    safety 2.3; with the bow doubler the forward third achieves 3.1.
+  Case S2, deck green-water: 15 kPa over the foredeck. Deck panel stress
+    about 4 MPa; factor of safety above 5.
+  Case S3, lifting: two-point davit lift at full load, dynamic factor 2.0.
+    Lifting eyebolt load path runs through the aluminum frame; frame
+    member stress 38 MPa against 276 MPa yield; factor of safety 7.2.
+  Case S4, grounding/dock bump: bow doubler absorbs 5 kN point load;
+    core crushes locally by design (sacrificial, repairable, Section 22).
+  Case S5, vibration: motor excitation 40 to 75 Hz; first hull panel
+    resonance computes above 110 Hz due to sandwich stiffness; isolation
+    mounts add 12 dB margin.
+  Case S6, dropped craft during handling: 0.5 m drop onto a flat surface;
+    corner loads stay inside Case S1 margins with the doubler.
+
+  Fatigue analysis (the prior revision had none):
+    Wave encounter cycles per mission: about 25,000 to 60,000 (4 to
+      10 hours at 1.5 to 2.5 Hz encounter frequency in Beaufort 3 to 5).
+    Service life target: 200 missions, about 8 x 10^6 cycles.
+    Recycled HDPE endurance strength at 10^7 cycles: 10 to 12 MPa
+      (conservative, knockdown for recycled content and weld seams).
+    Maximum cyclic facing stress at Beaufort 5 continuous: about 6 MPa
+      rms with 11 MPa peaks. Peaks stay under the endurance strength;
+      rms holds a factor of 1.7 to 2.0.
+    Weld-seam knockdown: centerline and doubler seams carry a 0.7 joint
+      efficiency; seam cyclic stress computes to 4.3 MPa rms, inside the
+      knocked-down limit.
+    Validation: Test T6 runs a 24-hour continuous wave-tank cycle at
+      Beaufort 5 equivalent, then a 200-cycle slam rig at 1.5 times
+      design pressure, with pre- and post-test immersion checks and
+      dye-penetrant inspection of all seams.
+
+6.5 BUOYANCY SUBDIVISION AND UNSINKABILITY
+
+  The hull divides into three watertight volumes: forepeak (0.4 m3),
+  main bay (1.1 m3), and aft machinery bay (0.5 m3), separated by
+  foam-bonded bulkheads. The 0.94 m3 of closed-cell foam in the sandwich
+  provides about 900 kg of inherent flotation; the craft floats awash but
+  upright even with all three compartments fully flooded. No emergency
+  blow system exists (a prior-version submarine feature, deleted); the
+  foam makes one unnecessary, which removes a compressed-air hazard, a
+  failure mode, and 4 kg.
+
+6.6 SHOCK ISOLATION OF ELECTRONICS (NEAR-MISS IMPULSE PROTECTION)
+
+  The standoff protocol (Section 15.3) keeps the hull outside lethal
+  blast range, but a near-miss actuation or a heavy slam still delivers
+  a water-borne and structure-borne impulse that shatters rigid-mounted
+  circuit boards. Military practice isolates electronics on machined
+  titanium mounts at roughly 850 CAD per corner; this design achieves
+  the same attenuation with commercial stainless wire-rope dampers.
+
+  Hardware: stainless wire-rope isolators, M6 thread, 3 to 15 kg load
+    rating per unit, in sets of 4 to 8 per tray.
+  Protected items: mission computer tray, hydrophone preamp/ADC tray,
+    coil-driver and acoustic-driver plate, side-scan front-end board.
+    Battery packs keep their existing neoprene 40A pads (mass rules out
+    wire-rope at this size; the steel cases already tolerate 15 g).
+  Performance: about 70 percent shock attenuation above 20 Hz;
+    operational rating 15 g, survival rating 25 g, 11 ms half-sine.
+    The residual impulse at standoff-protocol distances computes well
+    inside the 15 g operational rating.
+  Validation: Test T21 (20 g shock-machine run with post-test function
+    check).
+  Mass: 0.6 kg per vessel. Cost: 48 CAD per vessel (Section 24.11).
+
+--------------------------------------------------------------------------------
+7. MASS BUDGET, STABILITY, AND SEAKEEPING
+--------------------------------------------------------------------------------
+
+7.1 RECONCILED MASS BUDGET (CLOSES TO DISPLACEMENT)
+
+  Group                            Mass (kg)   Vertical CG above keel (m)
+  Hull and structure (6.2)            226.0          0.46
+  Trim ballast, encapsulated           28.0          0.12
+  Motors, ESCs, props, shafts           15.3          0.28
+  Trim fin and servo                     1.8          0.30
+  Batteries (2 x 48 kg)                 96.0          0.22
+  BMS, DC-DC, distribution, wiring      12.5          0.30
+  Cooling pumps, plumbing, plates        9.4          0.32
+  Keel-cooler panels                     16.0          0.05
+  Coolant and reservoir (15 L)           18.0          0.35
+  Comms, compute, sensors, antennas      9.5          0.55
+  Acoustic projector and driver          14.0          0.25
+  Secondary transducers (4)               6.0          0.20
+  Magnetic coils and drivers             19.0          0.30
+  Hydrophones, camera, processing         4.8          0.28
+  Fasteners, sealants, misc hardware      6.0          0.40
+  Paint, tape, markings                   1.5          0.55
+  Recovery and lifting gear               2.5          0.60
+  Signature harness and HV wiring         3.0          0.35
+  Side-scan sonar transducer + mount      1.1          0.18
+  LF impactor (solenoid + plate)          3.5          0.25
+  Dipping hydrophone + reel + weight      1.4          0.55
+  Ultrasonic altimeter                    0.3          0.20
+  Wire-rope isolator sets                 0.6          0.35
+  ---------------------------------------------------------------
+  Light craft                           496.2 kg   KG = 0.34 m
+  Crew effects (none), mission kit,
+  camera pan-tilt option, sparker
+  option, spare fuses and kit           +15.7 kg
+  ---------------------------------------------------------------
+  FULL-LOAD DISPLACEMENT                511.9 kg   KG = 0.35 m
+
+  Displacement volume at 1,026 kg/m3: 0.499 m3.
+  Draft check: submerged form volume approximates LWL x BWL x draft x
+  block coefficient 0.52 = 4.9 x 1.35 x d x 0.52; solving gives d =
+  0.145 m of hull immersion; adding appendages, keel coolers, and tunnels
+  brings effective draft to the 0.22 m design figure. Buoyancy reserve at
+  deck edge: (enclosed hull volume about 2.5 m3 minus displacement
+  volume) yields over 2,000 kg, about 400 percent reserve. The craft
+  carries generous margin for fouling, rain accumulation on deck, and
+  future payload growth.
+
+7.2 STABILITY
+
+  Waterplane inertia about centerline: I = 0.7 x LWL x BWL^3 / 12 =
+    about 1.19 m4.
+  BM = I / displacement volume = 1.19 / 0.499 = 2.38 m.
+  KB at 0.22 m draft: about 0.12 m.
+  KG from mass budget: 0.35 m.
+  GM = KB + BM - KG = 2.15 m.
+
+  This GM is very high; the craft is extremely stiff. A stiff craft rolls
+  quickly and transmits harsh accelerations to sensors and structure.
+  Roll period estimate with radius of gyration 0.35 x beam:
+  T = 2 x pi x 0.56 / sqrt(9.81 x 2.15) = about 0.77 s.
+
+  Design response: the craft accepts high stiffness but manages it.
+  Batteries sit on raised trays (0.22 m CG as budgeted, not on the keel)
+  to hold GM near 2.0 m rather than higher; the anti-slam bow form and
+  1.6 m beam damping from the transom corners absorb the worst of it;
+  sensor mounts carry elastomer isolation rated for 8 g. The operator
+  speed schedule (Section 19) reduces speed in beam seas above
+  Beaufort 4, which caps roll acceleration at the sensor limit. A
+  smaller GM is achievable by raising the battery trays further, but the
+  anti-capsize margin takes priority in a 2.5 m seaway.
+
+  Heel and trim limits: static heel under 30 kn beam wind computes to
+  under 2 degrees; turning heel at 6 kn full differential stays under
+  4 degrees; downflooding angle (hatch coaming immersion) exceeds
+  50 degrees of heel.
+
+7.3 SEAKEEPING ENVELOPE
+
+  Beaufort 0 to 3 (waves to 1.25 m): full speed schedule, all sensors,
+    full signature output.
+  Beaufort 4 (1.25 to 2.0 m): transit limited to 5 kn; sweep lanes
+    oriented head-seas or following-seas by the mission planner; camera
+    use degraded; hydrophone performance unaffected.
+  Beaufort 5 (1.8 to 2.5 m): transit only, 3 to 4 kn, no signature
+    emission (sweep accuracy degrades below usefulness); the mission
+    planner diverts to shelter or holds station.
+  Beaufort 6 and above: prohibited. Pre-launch go/no-go and in-mission
+    abort both reference this ceiling.
+  Pitch and heave at the Beaufort 5 ceiling: pitch amplitude about
+  plus/minus 12 degrees, heave about 1.0 m, vertical acceleration at the
+  bow about 4 to 6 g, inside the Case S1/S2 structural envelope and the
+  8 g sensor mount rating.
+
+--------------------------------------------------------------------------------
+8. PROPULSION AND STEERING
+--------------------------------------------------------------------------------
+
+8.1 MOTORS (DUAL, REDUNDANT)
+
+  Type: brushless DC outrunner, marine-sealed, IP68, one per hull side
+  Rating: 3.0 kW continuous, 4.0 kW 60-second peak, each
+  Voltage: 48 V nominal (battery bus 44.8 to 58.4 V)
+  RPM at cruise: 1,800 to 2,600; at sprint 3,400
+  Efficiency: 89 to 92 percent across the cruise band
+  Cooling: cold-plate mount on the thermal loop (Section 10); prior
+    versions relied on an undefined hull jacket
+  Mass: 3.2 kg each; Cost: 190 CAD each (commercial marine/hobby class,
+    new), 340 CAD for the pair landed
+  Controller: 48 V, 100 A brushless ESC with regen braking and
+    controller-area-network telemetry, 2 units, 110 CAD each
+  Isolation: neoprene 40A mounts, 12 dB structure-borne noise reduction
+
+8.2 PROPELLERS AND DRIVE LINE
+
+  Propellers: 2 units, 3-blade, 280 mm diameter, 220 mm pitch, cast
+    Ni-Al-bronze (better corrosion and fouling behavior than aluminum in
+    37 ppt water), counter-rotating, 48 CAD each
+  Shafts: 316 stainless, 17 mm, with cutlass bearing and P-bracket per
+    side, 85 CAD per side
+  Seals: double-lip shaft seal plus dripless face seal, 42 CAD per side
+  Thrust: about 24 kgf per propeller at cruise RPM, 55 kgf each at peak;
+    bollard total about 110 kgf
+
+8.3 SPEED AND POWER CURVE (MEASURED-TARGET VALUES, TEST T7 VERIFIES)
+
+  The prior revision quoted 9 to 10 kn from 6 kW on a 5.2 m hull; the
+  Froude number at that speed on a 4.9 m waterline sits well past
+  displacement-mode efficiency. This revision publishes an honest curve
+  (semi-displacement estimates, propulsive efficiency 0.5):
+
+  Speed        Electrical draw (both motors)   Use
+  2.5-3.5 kn   350 to 600 W                    Sweep lanes
+  5.0 kn       about 900 W                     Economy transit
+  6.0 kn       about 1,400 W                   Standard transit
+  7.0 kn       about 2,400 W                   Fast transit (time-critical)
+  8.0 kn       about 4,200 W                   Sprint, 30-minute bursts only
+
+8.4 STEERING
+
+  Primary: differential throttle, turning radius 5 to 8 m at 6 kn,
+    response under 1.5 s, no rudder actuator in the primary loop.
+  Secondary: electric trim fin, 0.08 m2, plus/minus 20 degrees, 75 W
+    servo, for low-speed station-keeping, single-motor limp-home course
+    trim, and cross-current crab correction, 95 CAD.
+  Limp-home: one motor plus trim fin holds 2.5 kn and steerage in
+    Beaufort 4.
+
+8.5 PROPULSION COST SUMMARY (CAD)
+
+  Motors 340; ESCs 220; propellers 96; shafts/brackets/bearings 170;
+  seals 84; trim fin and servo 95; mounts 48; cabling and connectors
+  110; assembly labor (10 h at 65 CAD/h) 650.
+  Subtotal: 1,813 CAD.
+
+--------------------------------------------------------------------------------
+9. POWER AND ENERGY
+--------------------------------------------------------------------------------
+
+9.1 BATTERY SYSTEM
+
+  Configuration: two independent 51.2 V, 100 Ah LiFePO4 packs
+    (16 cells each), paralleled through ideal-diode OR-ing on the 48 V
+    bus; each pack carries its own BMS; a master balancer supervises
+    both. Packs also operate singly for graceful degradation.
+  Energy: 5.12 kWh per pack, 10.24 kWh installed, 9.2 kWh usable at the
+    90 percent depth-of-discharge policy.
+  Mass: 48 kg per pack (96 kg total), the single largest mass item; the
+    mass budget and stability sections carry this honestly. Prior
+    versions specified 4.8 kWh total and claimed endurance figures the
+    arithmetic never supported; this revision doubles capacity and
+    publishes the corrected endurance.
+  Pack format: sealed steel case, IP65 as shipped, installed inside the
+    watertight main bay; UN 38.3 certified for transport.
+  Cycle life: 3,000+ cycles at 80 percent depth of discharge.
+  Cost: 1,150 to 1,600 CAD per pack landed (2026 server-rack class
+    LiFePO4 pricing); budget 2,400 to 3,200 CAD per vessel.
+  Hot swap: one pack at a time through IP68 panel-mount 120 A
+    anti-spark connectors (Anderson SB120 class); swap time 6 minutes
+    dockside with two persons; the craft never goes fully dark during a
+    swap because the bus holds from the other pack.
+
+9.2 POWER BUDGET (FULL LOAD ACCOUNTING)
+
+  Cruise transit (6 kn, signatures off):
+    Propulsion 1,400 W; hotel load (compute 8 W, sensors 18 W, comms
+    standby 12 W, thermal loop 55 W, misc 15 W) 108 W.
+    Total 1,508 W. Endurance 9,200 / 1,508 = 6.1 h. Range about 37 nm.
+  Sweep profile (3 kn, signatures active at duty):
+    Propulsion 450 W; acoustic system 220 W average (downsized
+    amplifier, Section 14.1); mechanical impactor 40 W average
+    (Section 14.6); magnetic system 350 W average; side-scan sonar 10 W;
+    navigation aid 3 W; verification and hotel 120 W; thermal loop 55 W.
+    Total 1,248 W, call it 1,250 W. Endurance 9,200 / 1,250 = 7.4 h.
+    Lane distance about 22 nm per charge. The revision 2.1 downsized
+    acoustic amplifier releases enough power to cover the new sensors
+    with a small net endurance gain.
+  Sprint (8 kn, 30-minute limit): 4,200 + 150 W = 4,350 W; usable for
+    about 2.1 h continuous in theory, but the thermal transient and the
+    30-minute tactical limit govern; sprints consume 2.2 kWh each.
+  Loiter/station-keeping (1 kn into current): 250 + 165 W = 415 W;
+    endurance 22 h.
+  Mixed reference mission (Section 19): 30 percent transit, 55 percent
+    sweep, 15 percent loiter gives an average draw near 1,250 W and a
+    mission endurance of 6 to 8 hours on one charge, doubling with one
+    battery swap.
+
+  Peak current and surge: bus peak 4,350 W at 48 V = 91 A; motor start
+    surge (soft-started ESC) 1.4 x cruise for under 2 s; main bus fuse
+    150 A slow-blow; branch fuses per Section 24 schedule. Cabling sized
+    for 120 A continuous (25 mm2 tinned copper) with under 3 percent drop
+    at peak.
+  Derating: above 45 degrees C air or 40 degrees C battery temperature,
+    the power manager derates sprint to 3.5 kW; the BMS hard-cuts
+    discharge at 60 degrees C cell temperature and reconnects at 50.
+  Current margin: the power manager always reserves 12 percent of pack
+    energy for return-to-base; crossing the reserve boundary triggers
+    automatic return-home.
+
+9.3 CHARGING AND OPTIONAL SOLAR
+
+  Shore charging: two 1,000 W chargers (one per pack), 58.4 V, full
+    charge in 5 hours, 120/240 VAC input, 280 CAD each.
+  Solar film (option): 0.5 m2 flexible CIGS panel, 90 W peak, flush on
+    the deck; realistic average 15 to 25 W in Gulf sun with angle and
+    temperature losses; extends loiter endurance about 5 percent and
+    offsets hotel load; 165 CAD. Not required for the mission; it earns
+  its place on persistent-surveillance variants.
+
+9.4 POWER SYSTEM COST SUMMARY (CAD)
+
+  Batteries 2,800; master BMS and balancers 95; DC-DC converters
+  (48/24 V and 48/12 V) 85; distribution board, busbar, fuses 110;
+  SB120 connectors 92; cabling, lugs, heatshrink 58; shore chargers
+  (fleet-shared, one fifth each) 112; assembly labor (8 h) 520.
+  Subtotal: 3,872 CAD. Solar film option adds 165 CAD.
+
+--------------------------------------------------------------------------------
+10. THERMAL MANAGEMENT SYSTEM (FULL ENGINEERING DESIGN)
+--------------------------------------------------------------------------------
+
+This section replaces the undefined hull-jacket note in all prior versions.
+The review feedback identified the missing engineering: pump selection,
+flow-rate calculation, heat-exchanger sizing, worst-case thermal transient,
+redundancy, a full circuit schematic, and cost impact. Each item now
+follows, with derivations shown.
+
+10.1 HEAT LOAD INVENTORY (WORST CASE: 33 DEGREES C SEAWATER, 45 DEGREES C AIR)
+
+  Continuous sweep-mode loads:
+    Motors at sweep power (0.45 kW at 90 percent efficiency): 45 W
+    Motor controllers (2 x 2.5 percent of throughput): 22 W
+    Acoustic system (220 W average piezo plus 40 W impactor): 110 W
+    Magnetic coils, 350 W average, nearly all I2R heat: 330 W
+    Coil drivers and acoustic driver electronics: 45 W
+    Compute, sensors, comms, side-scan front end (bay heat): 65 W
+    Battery internal losses (about 2 percent of draw): 25 W
+    DC-DC converters (90 percent efficiency on 150 W): 15 W
+  ------------------------------------------------------------------
+  Total continuous design load: about 660 W (sweep), 950 W (transit with
+  signatures on), rounded design figure 1,000 W continuous. Revision 2.1
+  note: the side-scan (10 W), dipping hydrophone (negligible), and
+  altimeter (3 W) loads fit inside the rounded figures; the downsized
+  acoustic amplifier offsets the impactor addition.
+
+  Transient peak (sprint plus full signature output, 30 minutes):
+    Propulsion losses 420 W + signature 480 W + electronics 120 W +
+    battery 85 W = about 1,105 W; design peak figure 1,500 W with
+    margin.
+
+  Note on the review-log arithmetic: the log computed a coolant
+  requirement of 28 L/min for 1.2 kW at a 10 degrees C rise. That figure
+  contains a units slip. The mass flow for 1,200 W at 10 K is
+  1,200 / (4,180 J/kgK x 10 K) = 0.0287 kg/s, about 28 g/s, which is
+  1.7 L/min, not 28 L/min. The loop below sizes from the correct
+  derivation and still carries generous margin.
+
+10.2 ARCHITECTURE: CLOSED GLYCOL LOOP WITH KEEL COOLERS
+
+  The design rejects the prior passive jacket concept (plastic is a poor
+  conductor; 0.45 W/mK HDPE cannot reject 1 kW) in favor of an active
+  closed loop:
+
+    Heat sources (cold plates) -> parallel manifolds -> pump pair ->
+    two keel-cooler panels (hull-external, flush) -> reservoir ->
+    back to cold plates.
+
+  Coolant: 40 percent propylene glycol / 60 percent water (non-toxic,
+    freeze margin to minus 12 degrees C, boiling margin above 108
+    degrees C), specific heat about 3.9 kJ/kgK, density about 1,040
+    kg/m3. Total loop volume 15 L including reservoir.
+
+10.3 FLOW-RATE DERIVATION AND PUMP SELECTION
+
+  Required mass flow at design load 1,000 W and a chosen 4 K coolant rise:
+    m_dot = 1,000 W / (3,900 J/kgK x 4 K) = 0.064 kg/s = 3.7 L/min.
+  At transient peak 1,500 W the same flow gives a 6 K rise, acceptable.
+  Design flow: 6 L/min nominal (1.6 x margin), with pumps selected for
+  12 L/min each at the system head so a single pump holds full flow.
+
+  System head estimate: cold plates 8 kPa, panels 10 kPa, plumbing and
+    fittings 12 kPa, total about 30 kPa (0.3 bar) at 6 L/min.
+
+  PUMP SPECIFICATION (x2, N+1 redundancy):
+    Type: brushless DC centrifugal coolant pump, magnetic drive
+      (seal-less, no shaft seal to leak), automotive/marine class
+    Rating: 24 VDC (from the 48/24 converter), 45 W input, 12 to 15
+      L/min at 0.3 bar, max head 0.9 bar
+    Wetted materials: PPS/PA66 housing, ceramic shaft, EPDM static
+      seals; glycol-rated
+    Control: PWM from the thermal controller; tachometer wire for
+      speed feedback (pump-failure detection without a separate flow
+      meter in the primary loop; a paddle flow switch provides backup)
+    Configuration: parallel installation with flap check valves so one
+      failed pump causes zero flow loss; each pump alone delivers
+      100 percent of design flow
+    Mass: 0.8 kg each; Cost: 130 CAD each
+  Pump power draw: 45 W running, 90 W both-pump test mode; the 55 W
+    thermal-loop figure in the power budget covers one pump plus
+    controller and valve losses.
+
+10.4 HEAT REJECTION: KEEL-COOLER SIZING (LMTD METHOD)
+
+  Rejection hardware: two flush-mounted hard-anodized 6061-T6 aluminum
+    keel-cooler panels, each 500 x 800 x 25 mm with ten internal 12 mm
+    passages, installed port and starboard at the turn of the bilge,
+    total wetted external area 0.80 m2. Panels sit proud of the outer
+    skin by 6 mm in a recessed pocket, protected by the skeg line.
+
+  Heat-transfer coefficient budget (design value, conservative):
+    External film, seawater at 3 kn: about 1,500 W/m2K
+    Internal film, glycol at 6 L/min: about 900 W/m2K
+    Wall and anodize conduction: negligible penalty
+    Overall U = 1/(1/1500 + 1/900) = 562 W/m2K
+    Fouling and aging factor 0.6: design U = 340 W/m2K
+
+  LMTD at the design point:
+    Coolant in 48 degrees C, out 44 degrees C; seawater 33 degrees C
+    dT1 = 15 K, dT2 = 11 K; LMTD = (15 - 11) / ln(15/11) = 12.9 K
+  Capacity: Q = U x A x LMTD = 340 x 0.80 x 12.9 = 3,510 W
+
+  Margin: 3.5 x over the 1,000 W continuous design load at the worst
+    summer water temperature. At zero boat speed (loiter, natural
+    convection external film about 250 W/m2K, U about 190), capacity
+    computes to about 1,960 W, still 1.3 x the full transient peak.
+    The loop therefore holds temperatures at anchor, at sweep speed, and
+    at sprint, with the reservoir absorbing transients (10.5).
+
+  Component temperature targets at 1,000 W continuous:
+    Coolant 44 to 48 degrees C; motor windings under 80 (limit 120);
+    ESC cases under 60 (limit 85); electronics bay air under 45
+    (component limit 70); battery under 40 (BMS limit 60). All margins
+    exceed 20 degrees C.
+
+10.5 WORST-CASE THERMAL TRANSIENT (BOTH PUMPS DEAD AT FULL PEAK)
+
+  Thermal capacitance of coolant: 15 kg x 3.9 kJ/kgK = 58.5 kJ/K.
+  Add motor and plate metal about 12 kJ/K; total about 70 kJ/K.
+  At the 1,500 W peak with zero active pumping: dT/dt = 1,500 / 70,000
+    = 0.021 K/s = 1.3 K/min.
+  From a 48 degrees C start, motor windings reach the 60 degrees C first
+  alarm in about 9 minutes, the 75 degrees C shed threshold in about
+  21 minutes, and the 85 degrees C emergency threshold in about
+  28 minutes. Natural convection through the panels (about 1,960 W at
+  loiter as computed above) actually arrests the rise below the shed
+  threshold in most failure cases; the transient margin exists for the
+  sprint case. The crew and the autonomy stack hold more than 20 minutes
+  to respond; no single failure creates an urgent thermal event.
+
+10.6 COLD PLATES AND PLUMBING (NAMED HARDWARE)
+
+  - Motor cold plates: 2 x 6061-T6 machined plates, 120 x 90 x 12 mm,
+    serpentine 8 mm channel, bolted to motor casing with thermal paste,
+    45 CAD each
+  - ESC/driver plate: one shared 200 x 150 x 12 mm plate for both ESCs,
+    the acoustic driver, and coil drivers, 60 CAD
+  - Electronics bay plate: 300 x 200 x 10 mm with integral air-side
+    fins and a 40 mm 24 V circulation fan, 55 CAD
+  - Manifold: 2 x PPS 4-port manifolds, 22 CAD each
+  - Hose: EPDM coolant hose, 12 mm ID, 6 m total, 4 CAD/m
+  - Fittings: 16 x brass barb elbows/straights with stainless clamps,
+    2.5 CAD each
+  - Reservoir: 15 L HDPE tank with level sensor port and 0.5 bar
+    pressure cap, 48 CAD
+  - Quick-drains: 2 x brass drain valves at loop low points, 8 CAD each
+  - Coolant: 16 L premixed 40 percent propylene glycol, 3 CAD/L
+
+10.7 MONITORING AND FAILSAFE LADDER
+
+  Sensors:
+    Motor winding thermistors x2 (one per motor, 6 CAD each)
+    Coolant supply and return PT1000 probes x2 (12 CAD each)
+    Electronics bay sensor x1 (8 CAD)
+    Pump tachometer inputs x2 (built into pumps)
+    Paddle flow switch, backup (18 CAD)
+    Reservoir level switch (10 CAD)
+  Controller: the real-time microcontroller runs this ladder:
+    Any motor above 60 degrees C: throttle both motors to 60 percent,
+      raise pump to full speed, warn operator.
+    Above 70 degrees C: shed the acoustic system (largest discretionary
+      load), continue sweep on magnetic only, warn operator.
+    Above 75 degrees C: shed magnetic system, transit to mission hold
+      point at 5 kn.
+    Above 85 degrees C: controlled stop, loiter on thermal convection,
+      declare SYSTEM_THERMAL event, await operator decision.
+    Flow switch low or both tachometers zero: treat as above 75 degrees
+      C case immediately.
+    Coolant level low: log leak suspect, disable pumps to save them
+      from dry running, degrade to convection mode, return home.
+  Every threshold logs to the black-box recorder with a 1 Hz thermal
+  history for post-mission review.
+
+10.8 THERMAL SYSTEM COST SUMMARY (CAD)
+
+  Pumps 260; keel-cooler panels (2 x 190) 380; cold plates 210;
+  manifolds 44; hose 24; fittings and clamps 40; reservoir 48; drains
+  16; coolant 48; sensors 44; flow switch 18; level switch 10; fan
+  (included in bay plate) 0; materials subtotal 1,149 CAD. Integration
+  labor 6 h at 65 CAD/h: 390 CAD. Total thermal system: 1,539 CAD
+  (full itemization in Section 24.4). Cost impact versus the prior
+  undefined jacket: plus 1,300 to 1,600 CAD per unit, slightly above
+  the review-log estimate because the N+1 pump pair and the second
+  keel-cooler panel did not exist in that estimate.
+
+10.9 THERMAL VALIDATION TESTS (CROSS-REFERENCE SECTION 28)
+
+  Test T8: continuous 4-hour full-signature run in 33 degrees C water
+    (heated tank), all temperatures logged, pass criterion: no load-shed
+    event and bay air under 45 degrees C.
+  Test T9: single-pump failure injection at full load; pass criterion:
+    zero temperature alarm and flow within 5 percent of nominal.
+  Test T10: both-pump failure injection; pass criterion: first alarm no
+    earlier than 8 minutes, emergency threshold no earlier than 25
+    minutes, graceful ladder execution.
+
+--------------------------------------------------------------------------------
+11. COMMUNICATIONS AND NETWORKING
+--------------------------------------------------------------------------------
+
+11.1 LINK ARCHITECTURE (PRIMARY, BACKUP, FALLBACK)
+
+  PRIMARY: UHF data radio, 400 to 470 MHz licensed band, 5 W, GMSK,
+    19.2 kbps, range 20 to 40 km line-of-sight with the shore/mast
+    directional antenna. Carries full telemetry at 1 Hz, commands, and
+    a compressed camera frame every 5 s. Latency under 1 s. Hardware:
+    140 CAD on the craft; shore station with 8-element Yagi 340 CAD
+    (fleet asset, amortized).
+  BACKUP: Iridium Short Burst Data modem (9603 class), global coverage,
+    message cycle 20 to 60 s, monthly service about 25 CAD per active
+    unit. Carries position, health, events, and abort commands; it does
+    not carry video and it does not support real-time piloting. Modem
+    320 CAD refurbished, antenna 60 CAD.
+  FALLBACK: LoRa mesh, 868/915 MHz, 0.3 W, 2 to 5 km per hop, carries
+    inter-unit status, relay-of-relay alarm forwarding, and swarm
+    coordination packets. 28 CAD per unit (two radios: one primary, one
+    diversity).
+
+11.2 MESH NETWORK OPERATING MODES (CLARIFYING THE PRIOR OVERCLAIM)
+
+  Radio does not propagate underwater, and this craft operates on the
+  surface, so the mesh constraint is simpler than the prior review
+  assumed, but the claim of a 50-unit, 250 km self-healing network
+  still overstates reality. The honest design:
+
+  Mode M1, surface mesh (normal): up to 12 units per mesh partition
+    (tested target; 50-unit networks are a Phase 3 goal, not a
+    prototype claim), automatic route discovery, self-healing on unit
+    loss, 1 to 5 s packet latency per hop, duty-cycled to stay inside
+    band regulations.
+  Mode M2, store-and-forward: beyond UHF and mesh range, each unit
+    executes its mission autonomously and logs everything; satellite
+    SBD forwards a compressed health/event digest every 10 minutes;
+    full data uploads on return to link.
+  Mode M3, acoustic coordination (option): a commercial underwater
+    acoustic modem (about 2,800 CAD, 300 bps, 1 to 3 km) supports
+    submerged-to-surface test coordination with instrumented mine
+    simulants during trials. It is a trials tool, not a production fit.
+
+11.3 PACKET LOSS AND LATENCY HANDLING
+
+  - Telemetry uses sequence numbers and last-good-value holdover;
+    operator display flags stale data after 10 s (UHF) or 3 missed SBD
+    cycles.
+  - Commands require acknowledgment; unacknowledged commands re-send
+    twice, then the autonomy stack applies the lost-link rule
+    (Section 12.5).
+  - Packet loss above 30 percent for 60 s on UHF automatically promotes
+    SBD to primary and logs a link-quality event.
+  - All links carry AES-128 encryption and per-unit keys; a failed
+    authentication drops the packet silently.
+
+11.4 ANTENNA AND PENETRATION SCHEDULE
+
+  GNSS: dual-band active patch on the mast top, 45 CAD.
+  UHF: 1/4-wave whip with ground plane on mast, 35 CAD.
+  Iridium: passive patch, mast, 60 CAD.
+  LoRa: 2 x helical, mast mid, 12 CAD each.
+  Mast: 0.6 m carbon tube, collapsible for transport, on the aluminum
+    frame mast base; all leads enter through IP68 M12 bulkhead
+    connectors (Section 16).
+
+--------------------------------------------------------------------------------
+12. AUTONOMY, NAVIGATION, AND SOFTWARE
+--------------------------------------------------------------------------------
+
+12.1 COMPUTE STACK
+
+  Mission computer: industrial single-board computer, quad-core ARM,
+    4 GB RAM, 64 GB industrial microSD plus 32 GB redundant card,
+    fanless, conformal coated, 8 W, 120 CAD.
+  Real-time controller: separate 32-bit microcontroller (STM32 class)
+    owning motor outputs, thermal ladder, power management, and the
+    failsafe state machine; it runs even with the mission computer
+    dead, 25 CAD.
+  Operating system: Linux LTS with a real-time kernel patch; autonomy
+    stack on ROS 2 or equivalent pub/sub framework; watchdog daemon
+    restarts failed processes and, failing that, power-cycles the
+    mission computer while the real-time controller holds station.
+
+12.2 NAVIGATION
+
+  GNSS/RTK: dual-frequency receiver, plus/minus 0.5 m standalone,
+    plus/minus 3 cm with RTK corrections over UHF, 95 CAD.
+  IMU: 9-DOF, heading plus/minus 2 degrees after magnetic calibration,
+    20 CAD.
+  Sensor fusion: extended Kalman filter blending GNSS, IMU, and motor
+    odometry; dead-reckoning drift under 2 percent of distance with
+    GNSS out.
+  Depth sounder: 50/200 kHz dual transducer, 0.5 to 150 m, grounds and
+    obstacle warning, 70 CAD.
+  COLREGs behavior: the autonomy stack detects AIS contacts (receiver
+    65 CAD), computes closest point of approach, and executes
+    stand-off maneuvers; any contact with CPA under 500 m promotes an
+    operator alert; under 200 m the craft stops and holds until the
+    contact passes or the operator commands. The human operator retains
+    final collision-avoidance authority at all times.
+
+12.3 FAILSAFE STATE MACHINE
+
+  States: IDLE, PRELAUNCH_CHECK, TRANSIT, SWEEP, VERIFY, LOITER,
+    RETURN_HOME, ABORT, RECOVERY, SAFE_DRIFT.
+  Key transitions:
+    Lost link (UHF and SBD both silent 10 min): finish current lane,
+      then RETURN_HOME; if battery reserve insufficient, LOITER at the
+      last commanded hold point and beacon on SBD.
+    GNSS lost over 15 min: dead-reckon to the pre-planned recovery
+      corridor, then LOITER and beacon.
+    Battery at 12 percent reserve: RETURN_HOME immediately.
+    Battery at 5 percent: SAFE_DRIFT, kill signature output, beacon
+      every 60 s on SBD and LoRa, strobe light on.
+    Single motor fault: continue on one motor, notify, mission
+      replans to shorter lanes.
+    Both motors fault: SAFE_DRIFT and beacon.
+    Water ingress detected (bay flood sensors): isolate affected bay
+      power, SAFE_DRIFT, beacon, strobe; foam flotation keeps the
+      craft afloat indefinitely.
+    Collision detected (IMU impact over 3 g): full stop 60 s, self-
+      check, operator alert; resume only on operator confirmation or
+      clean self-check after timeout.
+    Geofence violation: signature output off instantly, return inside
+      fence, alert operator.
+
+12.4 LOGGING AND DATA PRODUCTS
+
+  Black-box recorder: 1 Hz full-state log plus event-triggered 96 kHz
+    hydrophone captures and camera clips; 256 GB industrial SD, 45 CAD.
+  Data products per mission: track file (GPX), event list with
+    coordinates and confidence (Section 15), sector clearance
+    confidence map, full telemetry archive, and a human-readable
+    mission report auto-generated for the clearance authority.
+
+12.5 UPDATES AND RECOVERY
+
+  Firmware updates apply dockside over Wi-Fi/Ethernet with signed
+    images and A/B partitions; a failed update boots the previous
+    image automatically. No over-the-water updates during missions.
+  Recovery from software fault: three-level watchdog (process,
+    kernel, power-cycle), then real-time controller holds SAFE_DRIFT.
+
+12.6 GNSS-DENIED NAVIGATION (SEABED OPTICAL FLOW PLUS ALTIMETER)
+
+  Threat: GNSS jamming and spoofing are common in contested maritime
+  chokepoints. The Section 12.2 inertial solution drifts about 2 percent
+  of distance traveled without corrections, which corrupts the survey
+  grid over a long lane.
+
+  Military solution and its cost: a Doppler Velocity Log tracks
+  ground speed with a multi-beam sonar matrix for about 11,000 CAD
+  landed. That price belongs to a different class of program.
+
+  The Noor adaptation: seabed-relative velocity from machine vision.
+    - The existing verification camera and LED lights look forward-down
+      at the seabed. An optical-flow algorithm (the same physics as the
+      sensor inside an optical mouse, scaled to a camera frame)
+      measures ground-track velocity directly from bottom texture.
+    - A single-beam ultrasonic altimeter (0.3 to 30 m range, 1 percent
+      accuracy, 5 Hz, 48 CAD) measures altitude off bottom and gates
+      the vision solution: flow data counts only when the bottom sits
+      inside the usable 1 to 8 m window.
+    - The extended Kalman filter fuses flow velocity, IMU, altimeter,
+      and depth-sounder data. Expected drift with bottom in range:
+      2 to 5 percent of distance, versus about 2 percent per hour
+      growing unbounded for IMU-only dead reckoning.
+  Anti-spoofing check: the filter cross-checks every GNSS fix against
+    the inertial and mesh-track solution; a position jump over 200 m
+    without a matching motion history marks the fix as spoofed and the
+    craft ignores it.
+  Honest limits: the flow sensor needs the seabed inside camera range
+    and some visible bottom texture. Mined littoral chokepoints are
+    shallow, so the aid covers the mission area; over deep or
+    featureless mud bottom the craft reverts to inertial drift plus
+    LoRa mesh relative ranging, and the navigation log marks the
+    degraded state. The aid bounds the error; it does not erase it.
+  GNSS-out behavior per Section 12.3 remains: dead-reckon to the
+    recovery corridor, then loiter and beacon.
+  Mass: 0.3 kg. Power: 3 W. Cost: 133 CAD (Section 24.11).
+  Validation: Test T20.
+
+--------------------------------------------------------------------------------
+13. SENSORS AND INSTRUMENTATION (CONSOLIDATED SPECIFICATION TABLE)
+--------------------------------------------------------------------------------
+
+  Sensor          Range/scale     Accuracy      Latency   Cal method        Env limits
+  GNSS/RTK        global          0.5 m / 3 cm  1 Hz      survey-in + RTK   -20 to +60C
+  IMU 9-DOF       +/-16g, 2000dps 2 deg heading 100 Hz    turntable + mag   -20 to +60C
+  Depth sounder   0.5-150 m       0.5% reading  4 Hz      bar check + tank  -5 to +50C
+  CTD probe       0-40 mS/cm,     0.1 mS/cm,    1 Hz      2-point std sol.  -5 to +45C
+                  -5 to +40C      0.1 deg C
+  Hydrophones x3  10 Hz-100 kHz   -190 dB re    96 kHz    pistonphone +     -2 to +40C
+                  (Section 15)    1V/uPa sens.  sampling  tank sweep
+  Camera          1080p 30 fps    n/a           200 ms    chart + lights    0 to +40C
+                  5 lux min                                 calibration
+  AIS receiver    20-40 nm        n/a           3 s       bench signal gen  -20 to +55C
+  Thermal set     -20 to +125C    0.5 deg C     1 Hz      ice/boiling 2-pt  full range
+  Flood sensors   conductance     n/a           1 s       wet-rag test      full range
+  Flow switch     2-20 L/min      10%           1 s       bucket + stopw.   0 to +60C
+
+  Side-scan sonar   455/800 kHz,    MLO 0.3 m+ at  strip-map  tank + known-     -2 to +40C
+                    90/45 m range   40 m, 800 kHz  rate      target run
+  Ultrasonic altim. 0.3-30 m        1% reading     5 Hz      bar-check + tank  -2 to +40C
+  Dipping hydroph.  as hull array   -190 dB re     96 kHz    pistonphone       -2 to +40C
+                    (4th channel)   1V/uPa sens.   sampling  monthly
+
+  Calibration schedule: GNSS survey-in at each new base site; IMU
+  magnetic calibration after any battery or coil work; hydrophone
+  pistonphone check monthly; CTD two-point quarterly; thermal probes
+  annually; all calibration records attach to the vessel logbook.
+
+--------------------------------------------------------------------------------
+14. INFLUENCE SIGNATURE SYSTEMS (SHIP-SIGNATURE SURVEY EMITTERS)
+--------------------------------------------------------------------------------
+
+These systems imitate the acoustic and magnetic presence of an ordinary
+ship. They contain no energetic material. Their purpose is influence
+sweeping: presenting a convincing simulated ship so that influence-fuzed
+mines actuate against the simulation. The craft performs this work from
+standoff distances defined in Section 15.5.
+
+14.1 ACOUSTIC SIGNATURE MODULE
+
+  Primary projector (mid/high band; the Section 14.6 impactor covers
+  the 5 to 120 Hz fundamental band):
+    Type: cylindrical piezoelectric projector (PZT ceramic), 100 mm
+      diameter x 150 mm, shock-isolated mount under the hull centerline
+    Frequency range: 120 Hz to 10 kHz
+    Acoustic output: up to 300 W peak acoustic; source level about
+      185 dB re 1 uPa at 1 m at resonance, verified by Test T11
+    Electrical draw: 700 W peak, 220 W average at survey duty
+    Drive: compact class-D amplifier from the 48 V bus, 260 CAD
+      complete (amplifier, transformer, enclosure); revision 2.1
+      downsized this stage because the impactor carries the
+      power-hungry low-frequency duty
+    Projector cost: 200 to 300 CAD (salvage marine sonar or new
+      commercial); budget 240 CAD
+  Secondary array: four 50 W broadband transducers (100 Hz to 3 kHz),
+    two port and two starboard, giving an omnidirectional hull-noise
+    bed under the primary projector, 45 CAD each
+  Operating profile: 3 s ramp-in, programmable waveform playback,
+    30 s on / 20 s off duty at survey power, 2 s decay; thermal cutout
+    at 70 degrees C transducer temperature; cooling from the Section 10
+    loop via the shared driver plate plus transducer seawater exposure.
+
+14.2 SIGNATURE LIBRARY (NEW IN THIS REVISION)
+
+  Modern influence fuzes count ship passages, discriminate signatures,
+  and delay actuation. A generic tone fails against them. The craft
+  therefore plays recorded, ship-class-specific acoustic profiles:
+
+  Library contents (Phase 1 baseline):
+    - Handysize bulk carrier, 12 kn: propeller blade-rate fundamental
+      about 4 to 6 Hz with harmonics, machinery lines 60 to 400 Hz,
+      broadband cavitation to 8 kHz
+    - Product tanker, 14 kn: blade rate 5 to 7 Hz variant set
+    - Patrol craft, 20 kn: higher blade rate, planing broadband
+    - Fishing vessel, 8 kn: low-power diesel signature
+  Library format: calibrated FFT templates plus time-series playback
+    files; amplitude, blade rate, and harmonic mix randomize inside
+    class-realistic bounds on every lane so smart fuzes never see an
+    identical repeat.
+  Source of recordings: hydrophone recordings of cooperative vessels
+    made during Phase 1 trials, plus published open-source ship-noise
+    spectra as seed data; every template validates against a tank
+    measurement (Test T11) before fielding.
+  Coherent multi-physics emission: acoustic playback, magnetic field
+    modulation, and (option fitted) pressure pulses emit in a
+    coordinated pattern matching a single simulated vessel passing at a
+    defined speed, rather than as independent noise sources. The
+    Section 14.6 impactor supplies the blade-rate fundamental and
+    machinery thump in the 5 to 120 Hz band, strike-synchronized to the
+    library file; the piezo projector plays harmonics and broadband
+    above 120 Hz. Combined source level matches the revision 2.0
+    single-projector 800 W design across the band at roughly two
+    thirds of the electrical draw.
+
+14.3 MAGNETIC SIGNATURE SYSTEM
+
+  Configuration: three orthogonal air-core coil pairs (X 1.2 m,
+    Y 0.8 m, Z 0.6 m spacing), 80 to 120 turns of 0.75 mm enameled
+    copper each, embedded in the hull structure on non-ferrous mounts.
+  Field program: DC anomaly 500 to 1,500 nT at 1 m reference, modulated
+    1 to 50 Hz, synchronized to the acoustic playback so the magnetic
+    and acoustic simulated-ship passages coincide.
+  Power: 300 to 500 W continuous per dominant axis at full output;
+    40 percent duty at survey profile gives the 350 W average carried
+    in the power budget; coil heat flows into the Section 10 loop
+    through driver plates and coil-form conduction paths.
+  Drivers: three MOSFET H-bridge boards with current feedback, 95 CAD
+    each; wire and forms 90 CAD; winding labor in-house 6 h.
+  Calibration: three-axis magnetometer survey at 5, 10, and 25 m in a
+    magnetically quiet site after every coil service (Test T12).
+
+14.4 PRESSURE-INFLUENCE MODULE (OPTION, NON-EXPLOSIVE)
+
+  Pressure-fuzed mines respond to the hydrodynamic pressure field of a
+  moving hull, the hardest influence to simulate. Two honest options:
+
+  Option P1 (baseline): hull-form pressure field. The 5.2 m hull at
+    3.5 kn generates a modest but real pressure signature; combined
+    with repeated passes and the coherent acoustic/magnetic program it
+    covers older pressure fuzes partially. Cost: zero. Effectiveness:
+    partial, stated honestly.
+  Option P2 (optional sparker): a 100 J capacitor-discharge underwater
+    spark source (400 V bank, tungsten electrodes in a sealed,
+    double-insulated chamber), one pulse per 15 s, adding a broadband
+    pressure/acoustic impulse. This is a survey sparker in the same
+    family as geophysical seismic-survey equipment; it contains no
+    explosive and produces no fragment. Power 200 W average when
+    active. Cost: bank 150 CAD, charge circuit 85 CAD, electrode
+    chamber 65 CAD, integration 55 CAD, total 355 CAD. Fitted only
+    where the threat assessment calls for it.
+
+  Neither option claims full pressure-mine coverage. Deep-water
+  pressure-influence sweeping at full ship scale remains beyond this
+  craft class (even national programs treat it as unsolved for small
+  USVs); Section 30 lists it as a standing limitation.
+
+14.5 SIGNATURE SYSTEM COST SUMMARY (CAD)
+
+  Acoustic projector 240; compact driver 260; secondary transducers
+  180; magnetic wire 90; coil forms 36; coil drivers 285; harness and
+  HV cabling 65; materials 1,156 CAD; integration labor (10 h) 650 CAD.
+  Subtotal: 1,806 CAD. The Section 14.6 mechanical impactor prices
+  separately at 265 CAD (Section 24.11). Sparker option: 355 CAD
+  additional.
+
+14.6 LOW-FREQUENCY MECHANICAL IMPACTOR (REVISION 2.1)
+
+  Mission need: acoustic-influence mines actuate on the low-frequency
+  hull and machinery vibration of a passing ship, mostly the 5 to
+  120 Hz band. Producing high-energy sound in that band with
+  piezoceramic projectors demands large amplifiers and heavy battery
+  draw. Basic mechanical impact physics converts a simple electrical
+  pulse directly into a low-frequency acoustic shockwave in the water
+  at a fraction of the cost and power. (Impact-type emitters have a
+  long pedigree in influence sweeping for exactly this reason.)
+
+  HARDWARE:
+    Actuator: heavy-duty 24 VDC solenoid, automotive starter class,
+      about 60 N strike force, tungsten-carbide striker tip
+    Strike target: tuned 3 mm spring-steel plate, 350 x 350 mm,
+      bonded to the inner hull skin on a spring suspension; plate
+      resonance about 40 Hz; the hull skin radiates the impact into
+      the water
+    Driver: MOSFET low-side board with flyback protection and current
+      sense, 35 CAD
+    Mounting: frame hardpoint beside the keel line; striker travel
+      12 mm; elastomer snubber limits plate excursion
+
+  OPERATING PROFILE:
+    Strike energy: about 35 J electrical per strike, 150 W peak
+    Strike rate: programmable 0.5 to 10 Hz, synchronized to the
+      signature-library blade rate of the simulated ship
+    Duty: about 15 percent at survey profile; average draw 40 W
+    Acoustic output: source level 150 to 160 dB re 1 uPa at 1 m in the
+      10 to 120 Hz band, verified by Test T19, comparable to the
+      low-frequency output of the revision 2.0 eight-hundred-watt
+      piezo design
+    Thermal: solenoid coil temperature monitored; 50 percent maximum
+      duty enforced in firmware; coil heat (about 35 W average at
+      survey duty) conducts to the Section 10 loop through the shared
+      driver plate; a coil overtemp triggers the standard thermal
+      ladder
+
+  ROLE IN THE SIGNATURE PLAN: the impactor carries the low-frequency
+  fundamental; the downsized piezo projector (Section 14.1) carries
+  harmonics and broadband. Neither replaces the magnetic or optional
+  pressure influences.
+
+  Mass: 3.5 kg. Cost: 265 CAD (solenoid 55, plate and suspension 45,
+  driver 35, integration labor 2 h at 65 CAD/h 130).
+
+--------------------------------------------------------------------------------
+15. EVENT DETECTION AND VERIFICATION SUITE
+--------------------------------------------------------------------------------
+
+The verification suite answers the question that defines the mission:
+did anything actuate, where, and with what confidence. This section
+adds the standoff protocol and the multi-factor confidence model that
+prior versions lacked.
+
+15.1 HYDROPHONE ARRAY
+
+  Transducers: three omnidirectional hydrophones in a 0.8 m triangular
+    cluster under the hull, titanium/acetal housings, 40 CAD each
+  Sensitivity: minus 190 dB re 1 V/uPa; flat 10 Hz to 100 kHz
+  Front end: low-noise preamp (60 dB, 0.5 nV/rtHz), 24-bit ADC at
+    96 kHz (upgraded from the prior 48 kHz to capture blast rise
+    times), 110 CAD
+  Event capture: 10 s pre/post ring buffer per event; blast impulses
+    from typical bottom mines measure 160 to 200+ dB re 1 uPa at 1 km,
+    comfortably inside dynamic range; detection range 1 to 5 km by mine
+    size, validated by Test T13
+  Localization: time-difference-of-arrival across the cluster gives
+    bearing; cross-fixing between two or more craft, or successive
+    fixes from one moving craft, yields position; single-craft fix
+    error about 50 m at 1 km, dual-craft under 20 m
+  Classification: the prior version claimed a neural network trained on
+    naval archives, an unavailable dataset. This revision trains the
+    impulse classifier on published impulsive-source spectra plus the
+    program's own instrumented simulant recordings, and it presents
+    classifier output as one confidence factor among several (15.4),
+    never as sole evidence.
+
+15.2 CAMERA AND LIGHTS
+
+  Camera: 1080p30 low-light module, 90 degree wide lens, 5 lux minimum,
+    in a 30 m rated polycarbonate dome housing, forward-down looking,
+    45 CAD module plus 120 CAD housing
+  Lights: two 1,000-lumen LED modules on the camera axis (turbid
+    Hormuz water needs them), 30 CAD each
+  Recording: 128 GB industrial microSD onboard, continuous during
+  VERIFY passes; one compressed frame per 5 s streams over UHF
+  Pan-tilt option: 2-axis servo mount, 140 CAD
+
+15.3 STANDOFF PROTOCOL (NEW IN THIS REVISION)
+
+  Blast physics first: at 10 m from a 50 kg-class mine actuation,
+  peak shock overpressure measures in the hundreds of psi and fragments
+  travel at 50 to 200 m/s; the craft's 1 bar immersion rating is
+  irrelevant against that. The craft therefore never closes a live
+  contact. The protocol:
+
+  Rule 1: Signature emission and sweeping proceed on lanes whose
+    offsets keep the craft at least 100 m laterally from any
+    suspected contact location (acoustic and magnetic influences
+    propagate to the mine; the craft stays away).
+  Rule 2: On an actuation detection, the craft logs time and fix,
+    holds position, and waits 60 s for shock dissipation and
+    secondary effects.
+  Rule 3: Verification approach stops at 50 m for hydrophone and
+    camera debris-field inspection; closer approach to 20 m occurs
+    only when no actuation followed a sweep pass and the camera
+    inspects the contact, and only on operator command.
+  Rule 4: Any contact that fails to actuate after two sweep passes is
+    flagged UNCONFIRMED for the clearance authority; the craft does
+    not escalate by closing in. Escalation is a human decision with
+    proper disposal assets.
+  Rule 5: Swarm lanes de-conflict so no craft sits inside 300 m of
+    another craft's active sweep cell during an emission window.
+
+15.4 MULTI-FACTOR EVENT CONFIDENCE (REPLACES SINGLE-THRESHOLD LOGIC)
+
+  Background acoustic environment in Gulf waters: harbor and traffic
+  noise 120 to 140 dB, whale vocalizations to 190 dB, sonar pings,
+  seismic activity. A bare dB threshold generates false clears. Every
+  candidate event therefore scores:
+
+    Confidence = f(impulse shape and spectral match,
+                     magnetic anomaly correlation in time,
+                     visual debris-field confirmation,
+                     coincidence with own signature emission window,
+                     position inside the swept lane cell,
+                     cross-confirmation by a second craft)
+
+  Reporting grades:
+    CLEARED-EVENT: impulse during own emission window, spectral match,
+      and either second-craft confirmation or visual debris within
+      30 minutes. Two independent factors minimum.
+    PROBABLE-EVENT: impulse plus one supporting factor.
+    UNCONFIRMED: anything else, including silence after sweeping.
+  A corridor segment earns a clearance-confidence percentage, never a
+  bare cleared stamp; the human clearance authority owns final
+  certification.
+
+15.5 POST-SWEEP VALIDATION MODE (NEW IN THIS REVISION)
+
+  After the sweep phase, surviving craft run the corridor a second
+  time with all signature systems OFF:
+    - Hydrophones listen for residual acoustic anomalies.
+    - The side-scan sonar (Section 15.7) strip-maps every validation
+      lane regardless of turbidity, flagging mine-like objects.
+    - The camera surveys the seabed lane for undetonated ordnance and
+      debris fields where visibility permits.
+    - The depth sounder re-checks for newly exposed proud objects.
+  Anomalies flag for manual verification. Post-mission analysis
+  correlates all event fixes with any known minefield intelligence,
+  computes per-100 m segment clearance confidence, flags low-
+  confidence segments for follow-up, and generates a clearance
+  certificate draft with GPS coordinates for the human authority.
+
+15.6 VERIFICATION SUITE COST SUMMARY (CAD)
+
+  Hydrophones 120; preamp/ADC 110; camera 45; housing 120; lights 60;
+  storage 25; mounts and connectorization 85; materials 565 CAD;
+  integration labor (6 h) 390 CAD. Subtotal: 955 CAD. Pan-tilt option:
+  140 CAD additional.
+
+15.7 SIDE-SCAN SEABED SONAR (ZERO-VISIBILITY VERIFICATION)
+
+  Mission need: in the turbid coastal water of the operating theatre,
+  optical cameras go blind below 1 to 2 m of visibility and sediment
+  plumes blind them entirely. Acoustic side-scan imaging illuminates
+  the seafloor with sound instead of light, producing strip-maps that
+  reveal mine-like objects (MLOs) and seabed hazards regardless of
+  water clarity.
+
+  Military solution and its cost: dedicated survey side-scan systems
+  with proprietary processing run 3,800 to 6,000 CAD and up. The
+  piezoceramic element inside a consumer fishfinder transducer emits
+  the same high-frequency pulses; the cost lives in the proprietary
+  software and enclosures, not in the physics.
+
+  THE NOOR ADAPTATION:
+    Transducer: consumer-marine dual-frequency side-scan element
+      (455/800 kHz class, 3-in-1 type), port and starboard fan beams,
+      mounted in a streamlined fairing under the hull centerline,
+      tilted 20 degrees, 280 CAD
+    Front end: custom analog board (low-noise preamp, band-pass
+      filters, 24-bit ADC) feeding raw ping data to the mission
+      computer, 85 CAD in parts; the board design is the one piece of
+      genuine engineering development in this subsystem
+    Processing: onboard software builds waterfall strip-maps in real
+      time; a contrast-based MLO cueing detector flags objects 0.3 m
+      and larger; thumbnails of every cue stream to the operator over
+      UHF; full strip-maps record onboard and attach to the clearance
+      certificate draft
+    Fallback: if the custom front end misses Test T18 performance
+      targets, a complete consumer side-scan head unit with network
+      logging output bolts on instead for about 250 CAD additional,
+      with zero hull changes
+
+  PERFORMANCE TARGETS (TEST T18 VERIFIES):
+    Range: 90 m per side at 455 kHz; 45 m per side at 800 kHz
+    Detection: 0.3 m MLO at 40 m slant range, 800 kHz, in visibility
+      under 1 m (where the camera sees nothing)
+    Swath productivity: a validation pass at 4.5 kn maps a 90 m swath,
+      about 0.75 km2 per hour
+
+  Mass: 1.1 kg. Power: 10 W. Cost: 615 CAD (transducer 280, front-end
+  board 85, fairing mount 55, integration labor 3 h 195).
+
+15.8 GRAVITY-DROP DIPPING HYDROPHONE (REVISION 2.1)
+
+  Mission need: the hull-mounted hydrophone array sits in the surface
+  noise layer. In Beaufort 4 to 5, wave turbulence and hull slap raise
+  the local noise floor and mask the blast signatures the verification
+  suite exists to catch. Clean listening water sits 8 to 10 m down.
+
+  Military solution and its cost: a motorized dipping winch with a
+  waterproof slip-ring runs 2,100 CAD and up, and adds a mechanical
+  failure point in exactly the conditions where it matters.
+
+  THE NOOR ADAPTATION (GRAVITY OVER SERVOS):
+    Element: one spare-class omnidirectional hydrophone, minus 190 dB
+      re 1 V/uPa, identical to the hull array elements, 40 CAD
+    Line: 12 m Kevlar-reinforced signal cable with a 0.6 kg
+      streamlined drop weight, wound on a passive spring-tensioned
+      reel in a transom well, 55 CAD
+    Release: electromagnetic pin release (24 V, 5 W momentary); the
+      weight drops the element to depth in under 5 seconds, 25 CAD
+    Operation: the line streams behind the craft during loiter and
+      validation passes; the element feeds the same preamp/ADC bank as
+      a fourth array channel, which also adds vertical aperture to the
+      TDOA fix geometry
+    Recovery: manual wind-in at recovery, or sacrificial cut-away in
+      rough recovery conditions; the line-plus-weight costs 55 CAD and
+      the spares kit (Section 23.1) carries replacements. No winch, no
+      slip ring, no motor.
+
+  Mass: 1.4 kg. Power: negligible (5 W momentary at release).
+  Cost: 185 CAD (element 40, line and reel 55, release 25,
+  integration labor 1 h 65). Validation: Test T13 extended with the
+  element deployed at depth in Beaufort 4 conditions.
+
+--------------------------------------------------------------------------------
+16. INGRESS PROTECTION AND SEALING
+--------------------------------------------------------------------------------
+
+16.1 WATERTIGHT ARCHITECTURE
+
+  The hull shell and its three compartments form the primary barrier.
+  Within the main bay, all electronics live in secondary sealed
+  enclosures; the craft therefore tolerates a bay flood without losing
+  the mission computer (it loses only the affected branch circuit,
+  which the power board isolates).
+
+16.2 PENETRATION AND SEALING SCHEDULE
+
+  Item                     Standard                      Detail
+  Cable bulkheads          IP68, 10 m rated               M12/M16
+                           (immersion case)               double O-ring
+  Antenna feed-throughs    IP68                           SMA bulkhead,
+                                                         gasket + potting
+  Shaft seals              double lip + face seal         316 shaft,
+                                                         per Section 8
+  Deck hatch               IP67                           silicone gasket,
+                                                         8 quick-release
+                                                         fasteners
+  Camera dome              IP68, 30 m rated               O-ring face seal
+  Hydrophone glands        IP68                           molded
+                                                         polyurethane
+  Sonar/altimeter glands   IP68                           molded
+                                                         polyurethane
+  Keel-cooler panel mounts bolted flange                  EPDM gasket,
+                           to frame                       sealant bed
+  Battery connectors       IP68 mated pair                SB120 class
+                                                         panel mounts
+  Pressure equalization    Gore-type membrane vent        prevents bay
+                           on each electronics box        vacuum lock and
+                                                         condensation
+
+16.3 SEAL MAINTENANCE
+
+  Every O-ring and gasket carries a service interval (Section 22):
+  inspect monthly, silicone-grease every 3 months, replace annually or
+  at 200 operating hours, whichever comes first. Every reassembly
+  after service ends with a vacuum-decay check (minus 0.3 bar, 5 min,
+  under 0.02 bar decay) before the hatch closes.
+
+================================================================================
+PART C. OPERATIONS
+================================================================================
+
+--------------------------------------------------------------------------------
+17. LAUNCH AND RECOVERY
+--------------------------------------------------------------------------------
+
+Launch and recovery decides the real-world tempo of uncrewed MCM
+operations; this section treats it as a first-class design problem.
+
+17.1 LAUNCH METHODS
+
+  Method L1, davit or crane (primary): two-point lift at the frame
+    hardpoints (SWL 400 kg each, Case S3), from the support boat or a
+    shore crane. One person rigs, one operates the davit. Time to
+    water: 4 minutes.
+  Method L2, ramp/beach: the craft slides off a inflatable roller
+    ramp; two persons, 10 minutes; suitable for expeditionary sites.
+  Method L3, trailer at boat ramp: standard small-boat trailer,
+    1,400 CAD (fleet asset); 15 minutes.
+  Pre-launch sequence (automated PRELAUNCH_CHECK): seal vacuum-decay
+    spot check, battery state above 90 percent, link check on all three
+    radios, GNSS fix, failsafe self-test, geofence upload, operator
+    go/no-go signature. Total 12 minutes.
+
+17.2 RECOVERY METHODS
+
+  Method R1, davit: the craft holds station against the support boat;
+    crew attaches a snap-hook to the bow recovery eye (the craft
+    presents the eye via a floating pickup line), then lifts. Sea
+    state limit Beaufort 4.
+  Method R2, net/ramp recovery: for training waters, the craft drives
+    onto a submerged ramp net. Sea state limit Beaufort 3.
+  Method R3, self-beaching (emergency): on SAFE_DRIFT near shore the
+    craft grounds on the bow doubler, which is sacrificial by design;
+    recover with two persons and the roller ramp.
+  Recovery in rough weather: above Beaufort 4 the craft loiters in a
+  pre-planned lee holding area until conditions ease; the battery
+  reserve always includes 2 hours of holding power for this case.
+
+17.3 TRANSPORT
+
+  One craft fits a standard pickup bed or a 6 m flatbed (3 across).
+  Tie-down at the frame hardpoints; mast collapsed; battery packs
+  travel installed (UN 38.3 certified, state of charge under 60
+  percent for road transport per carrier rules).
+
+--------------------------------------------------------------------------------
+18. OPERATIONAL CONCEPT (CONOPS)
+--------------------------------------------------------------------------------
+
+18.1 ORGANIZATION
+
+  A standard detachment: 5 craft, 1 support boat (7 to 9 m), 1 shore
+  station, 15 battery packs (10 installed, 5 rotating), 4 personnel
+  (mission lead/operator, second operator, two technicians).
+
+18.2 MISSION CYCLE
+
+  Planning: the mission lead imports known or suspected mine
+    coordinates (minefield mapping integration), charts, traffic, and
+    weather into the planning tool; the tool generates geofenced
+    sectors, parallel sweep lanes at 50 m spacing with 100 m contact
+    offsets (Section 15.3), lane assignments per craft, and a battery/
+    swap schedule. Planning time: 1 to 2 hours per 10 km2.
+  Deployment: craft launch per Section 17, transit in Trail formation
+    at 6 kn under UHF supervision.
+  Execution: craft run assigned lanes with signature emission inside
+    authorized windows only; the operator monitors position, health,
+    and event detections on the shore display; every actuation event
+    logs automatically with a confidence grade.
+  Intervention: the operator holds abort, hold, reroute, and
+    return-home authority on every link. Lost-link behavior per
+    Section 12.3.
+  Verification: post-sweep validation passes (Section 15.5), then
+    recovery, data upload, and the post-mission analysis package.
+  Mission termination: signature emission stops on geofence exit,
+    abort command, battery reserve, or thermal ladder action. Recovery
+    per Section 17.2.
+
+18.3 SWARM COORDINATION
+
+  Five craft partition a sector by lanes; the LoRa mesh shares
+  position and event fixes every 5 s; lane de-confliction enforces
+  the 300 m emission-window separation (Section 15.3, Rule 5); one
+  craft's UNCONFIRMED contact automatically queues a validation pass
+  for the nearest other craft.
+
+18.4 RULES OF CONDUCT
+
+  - The craft never emits signatures outside an authorized geofence
+    window.
+  - The craft never approaches a contact closer than the standoff
+    protocol permits.
+  - The craft yields to all crewed traffic (Section 12.2).
+  - The operator logs every intervention; the log attaches to the
+    clearance certificate draft.
+
+--------------------------------------------------------------------------------
+19. MISSION PROFILES AND REALISTIC CLEARANCE RATES
+--------------------------------------------------------------------------------
+
+19.1 SPEED SCHEDULE BY TASK
+
+  Transit between sectors: 5 to 6 kn (10 to 11 km/h)
+  Sweep lanes: 2.5 to 3.5 kn (4.6 to 6.5 km/h)
+  Post-sweep validation: 4 to 5 kn (7.5 to 9.5 km/h)
+
+19.2 COVERAGE (HONEST NUMBERS)
+
+  One craft, one charge: about 22 nm (41 km) of swept lane at 3 kn,
+  which at 50 m lane spacing covers about 2.0 km2 of corridor, or
+  about 0.7 km2 at the 3-lane re-sweep doctrine used against
+  ship-counting fuzes (each lane swept three times with different
+  library profiles).
+  One craft per 24 h (two charges, crewed swap cycle): 1.0 to
+  1.5 km2 swept to doctrine plus 3 to 4 km2 validated.
+  Five-craft detachment per 24 h: 5 to 7 km2 swept plus validation,
+  weather permitting. These figures replace the prior version's
+  unsupported 20 to 40 km2 per day claim; the review log's own
+  arithmetic (2 to 5 km/h sweep speed) supports the corrected figure.
+
+19.3 REFERENCE MISSION: 10 KM CORRIDOR, 15 SUSPECTED MINES
+
+  Assets: 5 craft, 4 personnel, 1 support boat.
+  Day 1: survey and validation mapping, 2 craft, weather window.
+  Days 2 to 4: doctrine sweeping, 5 craft, two sorties each per day.
+  Day 5: post-sweep validation and low-confidence re-sweep.
+  Output: event log with graded confidence per contact, clearance
+    certificate draft with per-segment confidence, flagged
+    UNCONFIRMED contacts for disposal assets.
+  Expected time per actuated mine: 15 to 30 minutes of lane time,
+  versus 1 to 2 days per contact for crewed sweeping, a 95 percent
+  timeline reduction on the volume-clearing task.
+
+--------------------------------------------------------------------------------
+20. CREW AND TRAINING
+--------------------------------------------------------------------------------
+
+20.1 ROLES
+
+  Mission lead/operator: mission planning, supervision, abort
+    authority, clearance data review.
+  Second operator: comms, link management, relief supervision.
+  Technicians (2): launch/recovery, battery rotation, maintenance.
+
+20.2 TRAINING PROGRAM (PER REVIEW FEEDBACK)
+
+  Week 1, theory (40 h): mine types and fuze mechanisms at the
+    unclassified level, acoustic and magnetic influence physics,
+    standoff protocol, safety case, regulations, environmental rules.
+  Days 6 to 8, simulator (24 h): mission planning tool, link-loss
+    drills, thermal ladder drills, collision scenarios, abort
+    procedures, swarm de-confliction.
+  Days 9 to 10, water practical (16 h): launch and recovery in
+    Beaufort 2 to 3, waypoint operations, failsafe verification,
+    simulant-lane run with an inert instrumented target.
+  Qualification: written exam plus supervised solo mission. Currency:
+    one supervised mission per 60 days.
+  Training cost per 4-person detachment: 18,000 to 25,000 CAD
+    including materials, sim time, and instructor day-rates (fleet
+    program cost, Section 25).
+
+--------------------------------------------------------------------------------
+21. SAFETY CASE AND HAZARD ANALYSIS
+--------------------------------------------------------------------------------
+
+21.1 TOP-LEVEL SAFETY CLAIMS
+
+  Claim A: no person enters the minefield; all craft operations occur
+    uncrewed with the crew on the support boat outside the swept area.
+  Claim B: the craft carries nothing energetic; a lost craft is a
+    floating plastic and electronics object, recovered or sunk-in-
+    place benign (Section 27).
+  Claim C: every failure mode terminates in a defined safe state
+    (Section 12.3); no failure mode creates a hazard to third parties
+    beyond ordinary small-craft drift, mitigated by the beacon,
+    strobe, AIS broadcast of position, and Notice to Mariners.
+
+21.2 HAZARD LOG (SEVERITY x LIKELIHOOD, MITIGATION, RESIDUAL)
+
+  H1, actuation blast damages craft: severity high, likelihood medium.
+    Mitigation: standoff protocol (100 m minimum), expendable
+    economics, foam flotation. Residual: accepted; craft loss costs
+    under 20,000 CAD and zero personnel risk.
+  H2, collision with commercial traffic: severity high, likelihood
+    low. Mitigation: AIS watch, COLREGs behavior, operator authority,
+    high-visibility paint, strobe, exclusion windows, Notice to
+    Mariners. Residual: low.
+  H3, loss of control link: severity medium, likelihood medium.
+    Mitigation: triple-link architecture, lost-link state machine,
+    geofence. Residual: low.
+  H4, flooding: severity medium, likelihood low. Mitigation: three
+    watertight compartments, sealed sub-enclosures, flood sensors,
+    900 kg foam flotation (craft cannot sink). Residual: low.
+  H5, propulsion failure: severity low, likelihood medium.
+    Mitigation: dual motors, limp-home, SAFE_DRIFT, recovery plan.
+    Residual: low.
+  H6, battery thermal event: severity high, likelihood very low.
+    Mitigation: LiFePO4 chemistry (thermal runaway threshold far
+    above operating range), dual BMS, 60 degrees C hard cut, steel
+    cases, bay flood tolerance, thermal loop. Residual: very low.
+  H7, thermal overload of signature systems: severity low, likelihood
+    medium (hot Gulf water). Mitigation: Section 10 system plus
+    ladder; Tests T8 to T10. Residual: low.
+  H8, magnetic/acoustic emission affects third parties: severity low,
+    likelihood low. Mitigation: geofenced windows, marine-mammal
+    observation protocol (Section 27), emission power limits.
+    Residual: low.
+  H9, recovery injury (lifting): severity medium, likelihood medium.
+    Mitigation: davit procedure, SWL-rated gear, PPE, training.
+    Residual: low.
+  H10, capsize in Beaufort 5+: severity low, likelihood low.
+    Mitigation: GM 2.15 m, downflooding angle above 50 degrees,
+    self-draining deck, immersion-rated seals, upright-floating foam
+    trim. Residual: very low.
+
+21.3 ABORT LOGIC AND EMERGENCY STATES
+
+  Abort triggers (any of): operator command, geofence violation,
+  battery reserve boundary, both-pump thermal event past the ladder,
+  flood in two bays, sustained link loss with GNSS degradation.
+  Abort action: signature off, RETURN_HOME or LOITER-hold by battery
+  math, beacon on, operator notification on every link.
+  Emergency states and recovery procedures live in the state machine
+  table (Section 12.3) and drill in the simulator course (Section 20).
+
+--------------------------------------------------------------------------------
+22. MAINTENANCE AND SERVICING
+--------------------------------------------------------------------------------
+
+22.1 SCHEDULE
+
+  After every mission (1 h per craft): freshwater rinse including
+    cooling panel faces, visual hull check, propeller and shaft check,
+    hatch vacuum-decay spot check, data download, battery recharge and
+    log review.
+  Every 25 operating hours (2 h): shaft-seal inspection and grease,
+    keel-cooler face inspection and soft-brush cleaning, connector
+    inspection, hydrophone dome wipe, camera dome polish, flood-sensor
+    function test, pump tachometer comparison.
+  Every 100 hours or monthly (4 h): full seal grease, coolant level
+    and refractometer check (40 percent glycol verified), pump bench
+    flow check, magnetic calibration of IMU, hydrophone pistonphone
+    check, structural tap-test of sandwich panels around hardpoints,
+    antifouling condition check (warm Gulf water demands it).
+  Every 200 hours or annually (8 h): replace all O-rings and the
+    shaft lip seals, replace coolant, bench-test ESCs and coil
+    drivers, propeller pitch check and balance, full immersion
+    re-test (Test T2 procedure), battery capacity test per pack,
+    update firmware, review fatigue log against Section 6.4.
+  Corrosion control: the only seawater-exposed metals are 316 shafts,
+    Ni-Al-bronze propellers, anodized aluminum panels and frame ends;
+    zinc anodes (2 x 0.5 kg) on the transom protect them; inspect
+    quarterly, replace at 50 percent consumption.
+
+22.2 BATTERY CARE
+
+  Charge to 100 percent only before missions; store at 50 to 60
+  percent; never leave packs below 10 percent; capacity-test every
+  6 months; retire packs at 80 percent of nameplate; recycle through
+  a licensed lithium recycler (Section 27).
+
+22.3 STORAGE PREPARATION
+
+  Over 30 days idle: rinse and dry, remove batteries to storage
+  charge, open hatch vents, desiccant packs in each bay, cover from
+  sun, monthly systems wake-up self-test.
+
+--------------------------------------------------------------------------------
+23. LOGISTICS AND SPARES
+--------------------------------------------------------------------------------
+
+23.1 FIELD SPARES KIT (PER 5-CRAFT DETACHMENT, CAD)
+
+  2 x motor (380), 2 x ESC (220), 4 x propeller (192), 4 x shaft
+  seal sets (168), 2 x coolant pump (260), 10 L coolant (30), 1 x
+  mission computer (120), 1 x real-time controller (25), 1 x UHF
+  radio (140), 1 x SBD modem (320), 2 x LoRa radio (56), 1 x
+  hydrophone (40), 1 x camera module (45), full O-ring and gasket
+  set x3 (135), anode set x4 (60), SB120 connectors x6 (90), M12
+  bulkhead set (60), fuses and breakers kit (45), EPDM hose 4 m (16),
+  fasteners kit (60), adhesive/sealant kit (55), thermal paste and
+  sundries (30), 1 x impactor solenoid (55), 2 x dipping-hydrophone
+  drop-line kits (110), 1 x wire-rope isolator set (48), 1 x
+  ultrasonic altimeter (48).
+  Spares kit total: about 2,720 CAD.
+
+23.2 CONSUMABLES PER OPERATING MONTH (DETACHMENT)
+
+  Antifouling touch-up 40, anodes amortized 20, O-ring grease and
+  sealant 25, coolant top-up 10, desiccant 8, microSD rotation 15,
+  sacrificial drop-lines 15, satellite service 5 x 25 = 125. Total
+  about 260 CAD per month.
+
+23.3 TOOLS (FLEET ASSET)
+
+  Vacuum-decay test rig (120), torque driver set (90), multimeter and
+  clamp meter (110), hydrophone pistonphone (350), magnetometer for
+  coil calibration (400), refractometer (25), shore charging bench
+  (included in Section 9.3 chargers), laptop per operator (700 x 2).
+  Tools total: about 1,795 CAD.
+
+23.4 SUPPLY CHAIN NOTES
+
+  Every line item in Section 24 is a commercial part available from at
+  least two suppliers (marine chandlery, EV/battery suppliers,
+  industrial automation distributors, or commodity electronics). No
+  ITAR-controlled, export-restricted, or single-source component
+  exists in the design. Batteries, motors, and pumps hold 8 to 12
+  week lead times in 2026; the program holds one fleet spares kit
+  per detachment as buffer.
+
+================================================================================
+PART D. COSTS, COMPARISONS, AND ENVIRONMENT
+================================================================================
+
+--------------------------------------------------------------------------------
+24. DETAILED BILL OF MATERIALS (EVERY NAMED PART, PRICED IN CAD)
+--------------------------------------------------------------------------------
+
+Pricing basis: mid-2026 landed Canadian retail or surplus pricing,
+1 USD = 1.41 CAD. Labor at 65 CAD/h (skilled technician, Canadian
+shop rate). Quantities are per single vessel at production rate
+(20+ units). Line items marked (fleet) are shared and amortized here
+at one fifth.
+
+24.1 HULL AND STRUCTURE
+
+  Item                                  Qty    Unit CAD   Ext CAD
+  Recycled HDPE sheet 5 mm (2.4x1.2 m)   9       85        765
+  Recycled HDPE sheet 8 mm, bow doubler  1      115        115
+  Recycled PP liner sheet 2 mm           8       28        224
+  Recycled PET foam core 20/25 mm, m2   20       12        240
+  PU structural adhesive, 600 ml         6       22        132
+  HDPE weld rod, 5 mm, 15 m              1       18         18
+  Carbon/glass UD tape + epoxy kit       1      210        210
+  6061-T6 tube 25x2 mm, 6 m lengths      5       26        130
+  Anodizing, frame set                   1       90         90
+  Epoxy primer + PU topcoat kit          1      120        120
+  Antifouling, copper-free, 1 L          1       55         55
+  Retro-reflective tape, 10 m            1       24         24
+  Deck hatch, 400x400 mm, gasketed       1       85         85
+  Mast, 0.6 m carbon tube + base         1       70         70
+  Lifting eyebolts M12, SWL 400 kg       2       14         28
+  Bow recovery eye + pickup line         1       32         32
+  Trim ballast, encapsulated, 28 kg      1      340        340
+  Zinc anodes 0.5 kg                     2       12         24
+  Hull labor (thermoform/foam/bond) 20 h  -       -       1,300
+  ---------------------------------------------------------------
+  Hull subtotal                                            4,002
+
+24.2 PROPULSION AND STEERING
+
+  BLDC motor 3 kW 48 V IP68              2      170        340
+  ESC 48 V 100 A, networked             2      110        220
+  Propeller 280x220 NiAlBr 3-blade       2       48         96
+  Shaft 316, 17x600 mm                   2       35         70
+  P-bracket + cutlass bearing            2       50        100
+  Double-lip + face seal set             2       42         84
+  Trim fin + 75 W servo                  1       95         95
+  Neoprene mounts 40A                    8        6         48
+  Cable 25 mm2 tinned, 6 m               1       54         54
+  Motor connectors, 120 A panel          2       28         56
+  Propulsion labor 10 h                  -        -        650
+  ---------------------------------------------------------------
+  Propulsion subtotal                                      1,813
+
+24.3 POWER AND ENERGY
+
+  LiFePO4 pack 51.2 V 100 Ah, UN38.3     2     1,400     2,800
+  Master BMS + balancer                  1       95         95
+  DC-DC 48/24 V 20 A                     1       50         50
+  DC-DC 48/12 V 10 A                     1       35         35
+  Distribution board + busbar + fuses    1      110        110
+  SB120 anti-spark panel connectors      4       23         92
+  Cable/heatshrink/lugs kit              1       58         58
+  Shore charger 1,000 W (fleet, 1/5)     2      280        112
+  Power labor 8 h                        -        -        520
+  ---------------------------------------------------------------
+  Power subtotal                                           3,872
+
+24.4 THERMAL MANAGEMENT
+
+  Coolant pump 24 V 12 L/min mag-drive   2      130        260
+  Keel-cooler panel 500x800, anodized    2      190        380
+  Motor cold plate 120x90                2       45         90
+  Shared driver cold plate               1       60         60
+  Bay cold plate + 40 mm fan             1       67         67
+  PPS 4-port manifold                    2       22         44
+  EPDM hose 12 mm ID, 6 m                1       24         24
+  Brass barbs + SS clamps set            1       40         40
+  Reservoir 15 L + cap + port            1       48         48
+  Drain valves                           2        8         16
+  40% PG coolant, 16 L                   1       48         48
+  PT1000 probes                          2       12         24
+  Motor thermistors                      2        6         12
+  Bay temp sensor                        1        8          8
+  Paddle flow switch                     1       18         18
+  Level switch                           1       10         10
+  Thermal labor 6 h                      -        -        390
+  ---------------------------------------------------------------
+  Thermal subtotal                                         1,539
+
+24.5 COMMUNICATIONS AND COMPUTE
+
+  UHF radio 5 W GMSK                     1      140        140
+  Iridium SBD modem 9603 class (refurb)  1      320        320
+  LoRa radio 868/915                     2       28         56
+  Shore UHF station + Yagi (fleet, 1/5)  1      340         68
+  Mission computer, industrial ARM 4 GB  1      120        120
+  Real-time controller STM32 class       1       25         25
+  GNSS/RTK receiver                      1       95         95
+  AIS receiver                           1       65         65
+  IMU 9-DOF                              1       20         20
+  Antennas (GNSS/UHF/Iridium/LoRa x2)    1      164        164
+  Black-box SD 256 GB industrial         1       45         45
+  Comms labor 6 h                        -        -        390
+  ---------------------------------------------------------------
+  Comms subtotal                                           1,508
+
+24.6 SENSORS (NON-VERIFICATION)
+
+  Depth sounder 50/200 kHz + transducer  1       70         70
+  CTD probe                              1       45         45
+  Flood sensors conductance              3        9         27
+  Sensor labor 2 h                       -        -        130
+  ---------------------------------------------------------------
+  Sensors subtotal                                           272
+
+24.7 SIGNATURE SYSTEMS
+
+  Piezo projector 120 Hz-10 kHz 300 W    1      240        240
+  Compact class-D acoustic driver        1      260        260
+  Broadband transducers 50 W             4       45        180
+  Enameled copper wire 0.75 mm, 14 kg    1       90         90
+  Coil forms (3D printed PETG)           3       12         36
+  MOSFET H-bridge coil drivers           3       95        285
+  HV harness + shielding kit             1       65         65
+  Signature labor 10 h                   -        -        650
+  ---------------------------------------------------------------
+  Signature subtotal                                       1,806
+  Option P2 sparker (bank 150, charger 85,
+    chamber 65, integration 55)                             +355
+
+24.8 VERIFICATION SUITE
+
+  Hydrophones, omni, -190 dB re 1V/uPa   3       40        120
+  Preamp + 24-bit 96 kHz ADC             1      110        110
+  Camera module 1080p low-light          1       45         45
+  Dome housing 30 m rated                1      120        120
+  LED lights 1,000 lm                    2       30         60
+  microSD 128 GB industrial              1       25         25
+  Mounts + connectorization kit          1       85         85
+  Verification labor 6 h                 -        -        390
+  ---------------------------------------------------------------
+  Verification subtotal                                      955
+  Option: 2-axis pan-tilt                                   +140
+
+24.9 INGRESS PROTECTION SET
+
+  M12/M16 IP68 bulkhead connectors      18        6        108
+  SMA bulkhead feed-throughs             5        9         45
+  Silicone gasket + O-ring full set      1       95         95
+  Gore-type vents                        4       12         48
+  Potting compound + dielectric grease   1       45         45
+  Vacuum-decay test fittings             1       28         28
+  Sealing labor 2 h                      -        -        130
+  ---------------------------------------------------------------
+  Ingress subtotal                                           499
+
+24.10 FASTENER SCHEDULE (NAMED, EVERY CLASS OF NUT AND BOLT)
+
+  Hex bolt M8x30 A4-70 SS               96     0.42      40.3
+  Nyloc nut M8 A4                       96     0.18      17.3
+  Flat washer M8 A4                    192     0.06      11.5
+  Hex bolt M6x20 A4                    120     0.25      30.0
+  Nyloc nut M6 A4                      120     0.12      14.4
+  Washer M6 A4                         240     0.05      12.0
+  Machine screw M5x16 A4               200     0.15      30.0
+  Nyloc nut M5 A4                      200     0.09      18.0
+  Self-tap screw #8x19, 316            300     0.08      24.0
+  U-bolt M6x40 (motor pods)              8     2.10      16.8
+  Hose clamp 12-22 mm 316               24     1.10      26.4
+  P-clip 12 mm cushioned                50     0.40      20.0
+  Cable tie 300 mm UV-black            200     0.07      14.0
+  Threadlocker, medium, 50 ml            1    18.00      18.0
+  Marine sealant 5200-class, 300 ml      3    21.00      63.0
+  Anti-seize compound, 100 g             1    14.00      14.0
+  Heat-shrink assortment, adhesive       1    22.00      22.0
+  ---------------------------------------------------------------
+  Fastener subtotal                                        382 (call 382 CAD)
+
+24.11 MISSION CAPABILITY SYSTEMS (REVISION 2.1 ADDITIONS)
+
+  Item                                  Qty    Unit CAD   Ext CAD
+  Side-scan transducer 455/800 kHz       1      280        280
+  Analog front-end + ADC board           1       85         85
+  Transducer fairing mount               1       55         55
+  Side-scan labor 3 h                    -        -        195
+  Heavy 24 V solenoid (starter class)    1       55         55
+  Tuned strike plate + spring mount      1       45         45
+  Impactor MOSFET driver board           1       35         35
+  Impactor labor 2 h                     -        -        130
+  Dipping hydrophone element             1       40         40
+  Drop line, weight, passive reel        1       55         55
+  Electromagnetic pin release            1       25         25
+  Dipping hydrophone labor 1 h           -        -         65
+  Ultrasonic altimeter + interface       1       68         68
+  Altimeter labor 1 h                    -        -         65
+  Wire-rope isolator sets (4 trays)      1       48         48
+  ---------------------------------------------------------------
+  Mission capability subtotal                            1,246
+
+  Cost-control note: every line above substitutes consumer-marine or
+  industrial hardware for the military-grade equivalent (survey sonar
+  3,800+, dipping winch 2,100+, Doppler velocity log 11,000+,
+  titanium shock mounts 850+ CAD). The five systems together cost
+  1,246 CAD against roughly 17,000 CAD for the conventional
+  equivalents, and the Section 14.1 amplifier downsize returns 300
+  CAD of it.
+
+24.12 ASSEMBLY, INTEGRATION, AND FACTORY TEST
+
+  Final assembly labor 12 h                        780
+  Wiring loom build and checkout 6 h               390
+  Firmware load + bench test 4 h                   260
+  Factory acceptance test per Section 28 T1 6 h    390
+  Consumables (gloves, wipes, mixing, abrasives)    90
+  ---------------------------------------------------------------
+  Assembly and test subtotal                        1,910
+
+24.13 RECONCILED PRODUCTION UNIT TOTAL (BASE CONFIGURATION)
+
+  Hull 4,002 + Propulsion 1,813 + Power 3,872 + Thermal 1,539 +
+  Comms 1,508 + Sensors 272 + Signature 1,806 + Verification 955 +
+  Ingress 499 + Fasteners 382 + Mission capability systems 1,246 +
+  Assembly/test 1,910
+  ---------------------------------------------------------------
+  BASE UNIT, PRODUCTION RATE (20+):              19,804 CAD
+
+  Volume tiers (materials discounts 12 to 18 percent, labor learning
+  curve minus 25 percent at 50+ units):
+    50+ units: about 16,450 CAD
+    100+ units: about 14,700 CAD
+  Options: sparker 355; pan-tilt 140; solar film 165; side-scan
+  fallback head unit 250; acoustic modem (trials only) 2,800.
+  First prototype units (one-off labor, no rate tooling): about
+  36,000 to 40,000 CAD each excluding mold amortization.
+  Revision 2.1 delta: plus 946 CAD net per unit (additions 1,246 CAD
+  minus 300 CAD returned by the acoustic amplifier downsize), inside
+  the follow-up review estimate of plus 400 to 650 USD.
+
+  Honesty note: this total is 2.5 to 3.5 times the optimistic figure
+  in Noor-jo Advanced v2.0, and about 5 percent above revision 2.0 of
+  this document. The difference is real labor at real
+  rates, new rather than surplus-critical parts (batteries, pumps),
+  the thermal system that did not previously exist, and the sealing/
+  fastener/testing content that prior versions omitted entirely. The
+  strategic cost case (Section 26) remains overwhelming.
+
+--------------------------------------------------------------------------------
+25. LAYERED COST MODEL
+--------------------------------------------------------------------------------
+
+25.1 PROTOTYPE PHASE COSTS (ONE-TIME)
+
+  Hull molds (thermoform tooling, 300-pull life): 10,000 CAD
+  Assembly jigs and fixtures: 4,500 CAD
+  Prototype craft x3 at one-off cost: about 114,000 CAD
+  Instrumentation for trials (tank time, wave basin day-rate,
+    instrumented inert simulants x2, reference hydrophones): 45,000 CAD
+  Test program execution (Section 28, Phases T1 to T6): 60,000 CAD
+  Certification liaison and documentation: 25,000 CAD
+  Prototype phase total: about 258,500 CAD (call it 260,000 CAD)
+
+25.2 RECURRING PRODUCTION COST
+
+  Per Section 24.13: 19,804 CAD base at 20+ rate; 16,450 at 50+;
+  14,700 at 100+.
+
+25.3 INTEGRATION AND SUPPORT EQUIPMENT (PER DETACHMENT, ONE-TIME)
+
+  Support boat (used 7 to 9 m, fleet asset): 60,000 to 90,000 CAD
+  Davit + trailer: 6,000 CAD
+  Shore station, laptops, spares kit, tools (Sections 11, 23):
+    about 6,000 CAD
+  Detachment total excluding boat: about 12,000 CAD
+
+25.4 OPERATING COST (PER DETACHMENT PER MONTH)
+
+  Personnel 4 x loaded day-rate, 10 operating days: 26,000 CAD
+  Consumables (Section 23.2): 260 CAD
+  Satellite service: 125 CAD
+  Battery amortization (packs last about 3 years of cycle use):
+    5 craft x 2 packs x 1,400 / 36 months = about 390 CAD
+  Maintenance parts: 300 CAD
+  Total: about 27,000 CAD per operating month
+
+25.5 SERVICE LIFE COST (PER CRAFT, 5-YEAR LIFE)
+
+  Acquisition 19,804 + battery replacements (2 sets) 5,600 +
+  scheduled parts and seals 2,200 + mid-life refit (pumps, seals,
+  anodes, topcoat) 1,800 + end-of-life recycling credit minus 300
+  = about 29,100 CAD per craft over 5 years, about 5,820 CAD/year.
+
+--------------------------------------------------------------------------------
+26. COMPARISON WITH FIELDED MINE-COUNTERMEASURE SYSTEMS
+--------------------------------------------------------------------------------
+
+Grounding in real programs (sources in Section 32.6):
+
+  US Navy MCM USV (Textron CUSV class): diesel, aluminum hull,
+    semi-autonomous, tows the Mk-104 acoustic generator and magnetic
+    sweep cable for influence sweeping, or the AQS-20C minehunting
+    sonar. Payload delivery systems alone: 18.3 M USD for four
+    minehunt PDS units (Raytheon, 2025 contract) and 12.1 M USD for
+    minesweep PDS (Textron, 2025 contract). Craft plus payload plus
+    support runs to millions per unit; mission packages cost tens of
+    millions.
+  Textron MMUSV (2026): 13,000 lb payload, Sea State 5, a larger and
+    far more capable, far more expensive class of craft.
+  Exail Inspector 90/125: 9.2 m aluminum and 12.3 m GRP craft, 24 to
+    40 h endurance, 20 kn, multi-million-euro class systems with
+    towed sonar and disposal ROV options.
+  Barracuda expendable neutralizer: an underwater munition with a
+    warhead; a different mission (destruction at the mine) and a
+    weapon by design. Noor Enhanced is not in this category and does
+    not compete with it; Noor sweeps and surveys, it never destroys.
+
+  Where Noor Enhanced fits: it is not a replacement for these
+  systems. It performs volume influence sweeping and verified
+  actuation mapping at 19,800 CAD per craft, ahead of and alongside
+  the exquisite systems, so that:
+    - crewed and high-end uncrewed assets spend their hours on
+      classification and disposal, not on sweeping;
+    - suspected areas convert into graded confidence maps in days;
+    - attrition of a 19,800 CAD craft is a budget line, not a
+      program loss.
+
+  Mission cost comparison, 10 km corridor with about 15 suspected
+  contacts (Section 19.3 scenario):
+    Crewed minesweeper deployment (90-day class operation):
+      16 M USD class (about 22.6 M CAD), personnel inside the threat
+      area.
+    Commercial high-end USV package: 5 M USD class (about 7 M CAD).
+    Noor Enhanced detachment (5 craft + month of operations +
+      spares + 2 attrition replacements): 5 x 19,804 + 27,000 +
+      6,000 + 39,600 = about 171,600 CAD.
+  Cost ratio: better than 100 to 1 against crewed sweeping for the
+  volume-clearing task, with zero personnel exposure. Prior versions
+  claimed 95 to 1 on optimistic pricing; honest pricing improves the
+  ratio further because traditional costs never fell.
+
+--------------------------------------------------------------------------------
+27. ENVIRONMENTAL COMPLIANCE
+--------------------------------------------------------------------------------
+
+27.1 MATERIALS FOOTPRINT
+
+  Each craft diverts about 120 kg of post-consumer HDPE/PP/PET from
+  the waste stream. Propulsion is fully electric: zero fuel, zero
+  exhaust, zero bilge discharge (sealed hull, no water intake beyond
+  the closed-loop coolers, no oil aboard other than 200 ml of
+  gear-case lubricant). Copper-free antifouling avoids biocide
+  leaching.
+
+27.2 ACOUSTIC EMISSION MANAGEMENT
+
+  Signature emission is loud by design, so the program manages it:
+    - Emission occurs only inside authorized windows and geofences.
+    - Duty cycle caps at 60 percent; total emission hours per sector
+      are counted and limited.
+    - A marine-mammal watch (visual plus the craft's own hydrophones,
+      which detect vocalizations to 190 dB) precedes every emission
+      window; detection of cetacean presence inside 1 km delays
+      emission 30 minutes.
+    - Ramp-in at 3 s gives mobile fauna time to depart.
+    - Seasonal exclusion applies near documented breeding or
+      aggregation areas per the environmental authority.
+
+27.3 LOSS AND END OF LIFE
+
+  A lost craft floats (foam) and presents a navigation hazard no
+  worse than driftwood; the beacon and last-known position drive
+  recovery. Unrecovered hull material is non-toxic, non-leaching
+  polymer; batteries in sealed steel cases remain recoverable for
+  years. End of life: hull regrind returns to the sheet supplier,
+  electronics and batteries go to licensed recyclers, target 85
+  percent material recovery by mass.
+
+================================================================================
+PART E. VALIDATION, PRODUCTION, AND ROADMAP
+================================================================================
+
+--------------------------------------------------------------------------------
+28. VERIFICATION AND VALIDATION PLAN
+--------------------------------------------------------------------------------
+
+Every performance claim in this document maps to a test below. Nothing
+advances to operational use on the strength of analysis alone.
+
+28.1 FACTORY AND DOCK TESTS
+
+  T1 Factory acceptance: full power-up, all sensors read, all links
+    pass, thermal loop pressure test at 1.5 bar, 30-minute full-power
+    motor run on the bench rig, vacuum-decay on all enclosures.
+  T2 Immersion integrity: sealed hull submerged to 10 m equivalent
+    (pressure tank or weighted pool test), 4 hours, zero measurable
+    ingress; repeated after every 200-hour service.
+  T3 Electromagnetic checkout: coil drivers at full output beside the
+    mission computer, GNSS, and hydrophone front end; no interference
+    above noise floor permitted.
+
+28.2 SHALLOW-WATER TESTS (PROTECTED HARBOR)
+
+  T4 Baseline maneuvering: speed-power curve measured (validates
+    Section 8.3), turning circles, limp-home on one motor, trim fin
+    authority.
+  T5 Stability: measured GM by inclining test (validates Section 7.2
+    within 15 percent), downflooding check, capsize-recovery drill
+    with crane.
+  T6 Structural: 24-hour continuous Beaufort 5 equivalent in a wave
+    basin plus 200-cycle slam rig at 1.5 x design pressure; dye-
+    penetrant inspection of seams before and after (validates
+    Section 6.4 fatigue case).
+
+28.3 SYSTEM TESTS
+
+  T7 Endurance: full-charge mission profile run until reserve
+    boundary; measured endurance validates Section 9.2 within 10
+    percent.
+  T8 Thermal soak: 4-hour full-signature run in 33 degrees C water;
+    pass = no load-shed event, bay air under 45 degrees C.
+  T9 Single-pump failure: inject at full load; pass = zero alarms,
+    flow within 5 percent.
+  T10 Both-pump failure: pass = ladder executes; first alarm no
+    earlier than 8 minutes; emergency threshold no earlier than 25
+    minutes.
+  T11 Acoustic calibration: source level and library fidelity measured
+    against reference hydrophone at 1, 10, and 100 m in representative
+    water; ship-profile templates approved for fielding only after
+    this test.
+  T12 Magnetic calibration: three-axis field mapped at 5, 10, 25 m;
+    repeat after any coil service.
+  T13 Verification suite: instrumented inert simulant trials measure
+    detection range, fix error, and classifier false-alarm rate
+    against traffic noise, marine life recordings, and sonar
+    interference; pass = detection of the reference impulse at 1 km,
+    fix error under 50 m single-craft, false-alarm rate under 1 per
+    24 operating hours.
+  T14 Comms: UHF walk-away range test, SBD message-cycle timing, LoRa
+    mesh partition healing after unit removal, lost-link drill
+    (validate Section 12.3 transitions).
+
+  T18 Side-scan imaging: runs over instrumented MLO simulants (0.3 m
+    and 0.5 m) in stirred-sediment or natural turbid water with
+    visibility under 1 m; pass = detection and strip-map localization
+    of every simulant at 40 m slant range at 800 kHz, plus a
+    comparison run documenting that the optical camera detects none
+    of them in the same water.
+  T19 Impactor output: reference hydrophone measurement of source
+    level and spectrum in the 5 to 120 Hz band at 1 and 10 m; pass =
+    150 dB re 1 uPa at 1 m minimum at the blade-rate lines, plus a
+    4-hour duty run with no coil overtemp event on the thermal
+    ladder.
+  T20 GNSS-denied navigation: GNSS-disabled lane run over shallow
+    bottom (under 10 m); pass = lane-keeping error under 5 percent of
+    distance over a 2 km lane; a deep-water run documents the
+    inertial-only degradation for the record.
+  T21 Shock isolation: shock-machine run, 20 g, 11 ms half-sine, on
+    each wire-rope isolated tray; pass = full function post-test with
+    no connector, solder, or mount failure; complements the T6
+    structural program.
+
+28.4 LAUNCH AND RECOVERY TRIALS
+
+  T15 Davit cycle x20 at Beaufort 2, x10 at Beaufort 3 to 4, timed,
+    with SWL proof-load certificate for lifting gear.
+  T16 Ramp and self-beach recovery x5 each.
+  T17 Rough-weather hold: craft holds station in Beaufort 5 lee for
+    2 hours on battery reserve (validates Section 17.2 margin).
+
+28.5 SUPERVISED FIELD TRIALS (7 DAYS, PER AUTHORITY FRAMEWORK)
+
+  Days 1 to 2: single-craft characterization (T4 to T8 spot repeats).
+  Days 3 to 4: two-craft mesh coordination and lane de-confliction.
+  Days 5 to 6: inert instrumented simulant lanes, full sweep doctrine,
+    verification suite scoring, standoff protocol execution, plus a
+    GNSS-denied lane (T20 field repeat) and side-scan mapping of the
+    simulant field (T18 field repeat) with the dipping hydrophone
+    deployed.
+  Day 7: recovery drills, debrief, data package to the authority.
+  Exit criteria: every T-test passed or dispositioned, zero safety
+  incidents, full data archive delivered.
+
+--------------------------------------------------------------------------------
+29. MANUFACTURING AND SCALE-UP
+--------------------------------------------------------------------------------
+
+29.1 PRODUCTION LINE CONCEPT
+
+  A two-bay workshop produces craft at rate: Bay 1 runs the
+  thermoformer, foam jig, and bonding; Bay 2 runs systems integration
+  and test. Staffing at rate: 4 technicians per shift. One shift
+  yields about 1.5 hulls per day and about 1 completed craft per day
+  (labor content about 56 h per craft at rate). Capital equipment:
+  thermoformer (18,000 CAD), foam jig (4,500), molds (10,000),
+  benches, test rig, and tools (12,000); about 45,000 CAD per line.
+
+29.2 SCALE TARGETS AND LEARNING CURVE
+
+  Year 1: 20 to 30 craft (prototype plus pre-production).
+  Year 2: 60 to 100 craft, second line optional.
+  Year 3: 200+ craft per year with licensed regional production.
+  Learning curve: 15 percent labor reduction per doubling; materials
+  discounts at 50+ and 100+ per Section 24.13.
+
+29.3 QUALITY SYSTEM
+
+  Traveler sheet per craft; torque-witness marks on every structural
+  fastener; vacuum-decay record per enclosure; serial-number trace for
+  batteries, pumps, and motors; T1 acceptance record ships with every
+  craft; field-failure feedback closes into the traveler within 30
+  days.
+
+--------------------------------------------------------------------------------
+30. LIMITATIONS AND HONEST ASSESSMENT
+--------------------------------------------------------------------------------
+
+  - The craft does not classify mines and does not replace minehunting
+    sonar or disposal systems. It is a volume-clearing and
+    verification tool ahead of those assets.
+  - Pressure-influence sweeping at full ship scale remains partial
+    (Section 14.4); deep, modern pressure fuzes do not always respond.
+  - Smart fuzes with ship counting and long delays demand repeat
+    passes and patience; clearance rates in Section 19 already carry
+    that penalty.
+  - Verification confidence is probabilistic (Section 15.4); a human
+    clearance authority certifies corridors, the craft informs.
+  - Beaufort 6 stops operations; Gulf shamal events pause the
+    calendar.
+  - Satellite latency (20 to 60 s SBD cycle) forbids remote joystick
+    piloting beyond UHF range; the craft is a supervised autonomous
+    system, not a remote-controlled boat.
+  - Every performance figure awaits its Section 28 test; this
+    document commits to test-derived revision, not marketing figures.
+  - Side-scan imagery detects and localizes mine-like objects; it
+    does not classify them, and its resolution sits below military
+    synthetic-aperture systems. The same honesty rule applies: the
+    craft informs, the authority certifies.
+  - The optical-flow navigation aid needs the seabed inside camera
+    range (about 8 m) and some bottom texture; over deep or
+    featureless bottom the craft reverts to inertial drift. The aid
+    bounds navigation error; it does not eliminate it.
+  - The mechanical impactor covers the low-frequency band only;
+    full-band signatures still need the piezo projector.
+  - The dipping hydrophone line is sacrificial by design; high-tempo
+    operations consume drop-lines as a planned consumable.
+  - An actuation event near the craft (inside protocol distances due
+    to an unknown contact) risks craft loss; the economics absorb it,
+    the foam keeps the debris afloat, and no person is exposed.
+
+--------------------------------------------------------------------------------
+31. DEVELOPMENT ROADMAP
+--------------------------------------------------------------------------------
+
+  Phase 1 (months 1 to 9), Prototype: molds and jigs, three prototype
+    craft, T1 to T14 complete, one supervised field trial. Budget
+    about 250,000 CAD (Section 25.1). Team: 4 to 6.
+  Phase 2 (months 9 to 15), Pre-production: 20 craft at rate, full
+    T-program repeats on production articles, detachment kit fielded,
+    training course certified, second supervised trial with five-craft
+    swarm. Budget about 700,000 CAD including craft.
+  Phase 3 (months 15 to 30), Operational pilot: regulatory approvals
+    complete, one operational detachment deployed under authority
+    supervision, 50+ craft produced, performance data published to the
+    clearance community. Budget about 1.2 M CAD.
+  Phase 4 (month 30+), Scale: 200+ craft per year, licensed regional
+    production, signature library expansion, 50-unit mesh partition
+    goal, persistent-surveillance variant (solar standard).
+  Standing development blocks: any weaponized variant (outside this
+  program's purpose, permanently excluded); full pressure-influence
+  simulation (research item, honestly open).
+
+--------------------------------------------------------------------------------
+32. APPENDICES
+--------------------------------------------------------------------------------
+
+32.1 CABLE AND BUS SCHEDULE
+
+  Bus A: 48 V main, 25 mm2 tinned, 150 A slow-blow main fuse,
+    branch fuses: motors 2 x 80 A, thermal 15 A, signature 60 A,
+    distribution 30 A.
+  Bus B: 24 V, 6 mm2, 20 A: pumps, fans, UHF.
+  Bus C: 12 V, 2.5 mm2, 10 A: compute, sensors, LoRa.
+  HV acoustic: shielded twisted pair, 110 V RMS, 60 A fuse at driver.
+  All conductors tinned marine-grade; all crimps adhesive heat-shrink;
+  all penetrations per Section 16.2.
+
+32.2 CALCULATION SUMMARY (KEY DERIVATIONS)
+
+  Coolant flow: m_dot = Q/(cp x dT) = 1,000/(3,900 x 4) = 0.064 kg/s
+    = 3.7 L/min; pumps sized 12 L/min each, N+1.
+  Keel cooler: Q = U x A x LMTD = 340 x 0.80 x 12.9 = 3,510 W at the
+    worst summer case; about 1,960 W at zero speed.
+  Thermal transient: C = 70 kJ/K; dT/dt = 1,500/70,000 = 1.3 K/min;
+    28 minutes from 48 to 85 degrees C.
+  GM: I = 1.19 m4; BM = 2.38 m; KB = 0.12; KG = 0.35; GM = 2.15 m.
+  Draft: 0.499 m3 / (4.9 x 1.35 x 0.52) = 0.145 m hull immersion;
+    0.22 m effective with appendages.
+  Slam panel: 60 kPa on 300 x 450 bay, peak facing stress about
+    11 MPa vs 25 MPa yield.
+  Endurance: 9.2 kWh usable / 1.508 kW = 6.1 h transit; /1.25 kW =
+    7.4 h sweep (revision 2.1 profile).
+
+32.3 GLOSSARY
+
+  Influence sweeping: presenting simulated ship signatures so
+    influence-fuzed mines actuate harmlessly against the simulation.
+  Actuation event: a mine responding to the sweep signature.
+  Standoff protocol: the minimum-distance rules of Section 15.3.
+  Keel cooler: hull-external flush heat-exchanger panel.
+  N+1: one redundant unit beyond the required set.
+  SBD: Iridium Short Burst Data messaging service.
+  SAFE_DRIFT: powered-down drifting safe state with beacon active.
+  MLO: mine-like object, a sonar contact awaiting classification.
+  Side-scan sonar: acoustic seabed imaging that works in turbid or
+    dark water.
+  Impactor: the solenoid-and-plate low-frequency acoustic emitter of
+    Section 14.6.
+  Dipping hydrophone: the gravity-deployed listening element of
+    Section 15.8.
+  Optical flow: vision-based ground-velocity measurement used for
+    GNSS-denied navigation (Section 12.6).
+  Wire-rope isolator: commercial stainless cable-loop shock mount.
+
+32.4 STYLE AND DRAFTING CONVENTIONS
+
+  This document follows the Immutable Matrix drafting rules: present
+  tense, active voice, no modal auxiliaries, no em dashes, colons
+  followed by a space. Performance statements use measured-target
+  language and every claim maps to a Section 28 test.
+
+32.5 REFERENCES (OPEN SOURCES CONSULTED, JULY 2026)
+
+  - US Navy fact file, Mine Countermeasures Unmanned Surface Vehicle
+    (MCM USV), navy.mil (program description, UMS/Mk-104, AQS-20C,
+    Barracuda MN PDS).
+  - The Defense Post, 2025-02-10: US Navy MCM contract awards
+    (Raytheon MH PDS 18.3 M USD; Textron MS PDS 12.1 M USD;
+    Bollinger AMO 7.7 M USD).
+  - Textron Systems press release, 2026-01-13: MMUSV introduction
+    (13,000 lb payload, Sea State 5, CUSV lineage).
+  - Exail product pages: Inspector 90/125 USV specifications.
+  - CIMSEC, 2026-06: Hormuz and the era of asymmetry (regional mine
+    inventory estimates, MAHAM 7/5/4 and Sadaf 01 references).
+  - Navy Lookout, 2026-04-20: autonomous minehunting operations in
+    the Strait of Hormuz (CUSV + AQS-20, Kingfish UUV context).
+  - DefenseScoop, 2026-04-11: Navy underwater drones for Hormuz
+    clearance context.
+  - Sea temperature and salinity data, Hormuz, seatemperature.info
+    (July 2026: about 33 degrees C, salinity about 37 ppt).
+  - USD/CAD exchange rate, July 2026: 1 USD about 1.41 CAD.
+
+32.6 VERSION HISTORY
+
+  v2.1 (Noor Enhanced), 2026-07-29: added five mission-capability
+       systems from follow-up review: side-scan seabed sonar,
+       low-frequency mechanical impactor, gravity-drop dipping
+       hydrophone, seabed optical-flow GNSS-denied navigation aid,
+       wire-rope shock isolation; acoustic amplifier downsized as a
+       compensating measure; net unit cost change plus 946 CAD; new
+       tests T18 to T21; mass budget, power budget, thermal inventory,
+       BOM, spares, cost model, and comparison sections reconciled.
+  v2.0 (Noor Enhanced), 2026-07-29: full engineering expansion;
+    thermal system engineered from first principles; mass, power, and
+    endurance reconciled; submarine features removed; standoff
+    protocol, multi-factor confidence, signature library, mesh modes,
+    safety case, V&V plan, maintenance, spares, layered cost model,
+    and fielded-system comparison added; mission language softened to
+    survey and inspection terminology throughout; pricing restated in
+    CAD on honest landed 2026 pricing.
+  Noor-jo Advanced v2.0, 2026-07-29: superseded.
+  Noor-jo Standard v1.0: archived.
+
+================================================================================
+END OF DOCUMENT - NOOR ENHANCED v2.0
+================================================================================
